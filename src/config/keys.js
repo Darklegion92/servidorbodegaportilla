@@ -2,8 +2,8 @@ module.exports ={
     database:{
         host:'localhost',
         user:'root',
-        password:'J1090452931l$.',
-        database:'soltec',
+        password:'1234',
+        database:'apiWeb',
     },
     SECRET_TOKEN:"SOLTEC"
 }
