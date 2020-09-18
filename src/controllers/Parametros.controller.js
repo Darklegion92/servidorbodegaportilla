@@ -1,11 +1,11 @@
 const pool = require("../config/database");
 const Services = require("../services");
 
-async function consultartarifasiva(req, res) {
+async function consultarcarusel(req, res) {
   res.setHeader("Content-Type", "application/json");
 
   try {
-    const datos = await pool.query("SELECT * FROM tarifasiva");
+    const datos = await pool.query("SELECT * FROM carusel");
 
     if (datos.length > 0) {
       res.status(200).send(datos);
@@ -16,6 +16,21 @@ async function consultartarifasiva(req, res) {
   }
 }
 
+
+async function consultarrecomendaciones(req, res) {
+  res.setHeader("Content-Type", "application/json");
+
+  try {
+    const datos = await pool.query("SELECT * FROM recomendaciones");
+
+    if (datos.length > 0) {
+      res.status(200).send(datos);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
 async function informesFacturacion(req, res) {
   res.setHeader("Content-Type", "application/json");
 
@@ -310,20 +325,7 @@ function error(req, res) {
 }
 
 module.exports = {
-  consultarnumeracion,
-  consultartarifasiva,
-  consultarlistasprecios,
-  editarnumeracion,
-  editartarifasiva,
-  editarlistasprecios,
-  crearnumeracion,
-  creartarifasiva,
-  crearlistasprecios,
-  consultarregimenes,
-  consultartiposdocumento,
-  consultarnumeroorden,
-  consultarnumerofacturacompra,
-  consultarnumerofacturaventa,
-  informesFacturacion,
+  consultarcarusel,
+  consultarrecomendaciones,
   error,
 };
