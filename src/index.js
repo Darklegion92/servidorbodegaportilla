@@ -6,6 +6,9 @@ const path = require("path");
 const passport = require("passport");
 const authRouter = require("./routes/Auth.routes");
 const parametrosRouter = require("./routes/Parametros.routes");
+const articulosRouter = require("./routes/Articulos.routes");
+const contactenosRouter = require("./routes/Contactenos.routes");
+const clientesRouter = require("./routes/Clientes.routes");
 const { isAuth } = require("./middlewares/acceso");
 
 //initializations
@@ -25,7 +28,11 @@ app.use(passport.session());
 //Global Variables
 
 //Routes
+app.use("/", clientesRouter);
 app.use("/parametros", parametrosRouter);
+app.use("/articulos", articulosRouter);
+app.use("/contactenos", contactenosRouter);
+
 
 //Public
 app.use(express.static(path.join(__dirname, "public")));

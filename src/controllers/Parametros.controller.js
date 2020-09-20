@@ -16,7 +16,6 @@ async function consultarcarusel(req, res) {
   }
 }
 
-
 async function consultarrecomendaciones(req, res) {
   res.setHeader("Content-Type", "application/json");
 
@@ -31,6 +30,53 @@ async function consultarrecomendaciones(req, res) {
     console.log(e);
   }
 }
+
+async function consultargrupos(req, res) {
+  res.setHeader("Content-Type", "application/json");
+
+  try {
+    const datos = await pool.query("SELECT * FROM grupos");
+
+    if (datos.length > 0) {
+      res.status(200).send(datos);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
+async function consultarmarcas(req, res) {
+  res.setHeader("Content-Type", "application/json");
+
+  try {
+    const datos = await pool.query("SELECT * FROM marcas");
+
+    if (datos.length > 0) {
+      res.status(200).send(datos);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
+async function consultarsubgrupos(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  const {idgrupo} = req.params;
+  try {
+    const datos = await pool.query("SELECT * FROM subgrupos where idgrupo=?", [
+      idgrupo,
+    ]);
+
+    if (datos.length > 0) {
+      res.status(200).send(datos);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
+
+/**VIEJO ESTO DE AQUI ABAJO */
 async function informesFacturacion(req, res) {
   res.setHeader("Content-Type", "application/json");
 
@@ -327,5 +373,8 @@ function error(req, res) {
 module.exports = {
   consultarcarusel,
   consultarrecomendaciones,
+  consultargrupos,
+  consultarmarcas,
+  consultarsubgrupos,
   error,
 };

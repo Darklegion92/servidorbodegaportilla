@@ -4,7 +4,7 @@ async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { idgrupo, idsubgrupo, idmarca } = req.query;
   try {
-    let sql = "select * from articulos";
+    let sql = "select * from orden";
     let params = [];
     if (idgrupo && idsubgrupo && idmarca) {
       sql =
