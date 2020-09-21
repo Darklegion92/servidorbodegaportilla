@@ -1,33 +1,27 @@
 const pool = require("../config/database");
 
-async function consultar(req, res) {
+async function guardar(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { idgrupo, idsubgrupo, idmarca } = req.query;
-  try {
-    let sql = "select * from orden";
-    let params = [];
-    if (idgrupo && idsubgrupo && idmarca) {
-      sql =
-        "select * from articulos where idgrupo=? and idsubgrupo=? and idmarca=?";
-      params = [idgrupo, idsubgrupo, idmarca];
-    } else if (idgrupo && idmarca) {
-      sql = "select * from articulos where idgrupo=?and idmarca=?";
-      params = [idgrupo, idmarca];
-    } else if (idgrupo && idsubgrupo) {
-      sql = "select * from articulos where idgrupo=? and idsubgrupo=?";
-      params = [idgrupo, idsubgrupo];
-    } else if (idgrupo) {
-      sql = "select * from articulos where idgrupo=?";
-      params = [idgrupo];
-    } else if (idmarca) {
-      sql = "select * from articulos where idmarca=?";
-      params = [idmarca];
-    }
-    const datos = await pool.query(sql, params);
+  const {
+    idcliente,
+    codigoarticulo,
+    preciound,
+    cantidad,
+    nombrearticulo,
+    embalajearticulo,
+  } = req.body;
 
-    if (datos.length > 0) {
-      res.status(200).send(datos);
-    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  try {
+    await pool.query("CALL nueva_orden(?,?,?,?,?,?)", [
+      idcliente,
+      codigoarticulo,
+      preciound,
+      cantidad,
+      nombrearticulo,
+      embalajearticulo,
+    ]);
+
+    res.status(200).send({ mensaje: "Orden creada correctamente" });
   } catch (e) {
     res.status(501).send({ mensaje: "Error " + e });
     console.log(e);
@@ -40,6 +34,6 @@ function error(req, res) {
 }
 
 module.exports = {
-  consultar,
+  guardar,
   error,
 };

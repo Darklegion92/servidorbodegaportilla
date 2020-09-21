@@ -5,7 +5,7 @@ const ClientesCtrl = require("../controllers/Clientes.controller");
 router = Router();
 router
   .get("/login", ClientesCtrl.login)
+  .post("/register", ClientesCtrl.registro)
   .get("/*", ClientesCtrl.error)
-  .post("/register");
 
 module.exports = router;

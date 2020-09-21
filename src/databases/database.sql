@@ -170,7 +170,7 @@ SET
 WHERE
   id = NEW.idorden;
 
-END $ $ DELIMITER;
+END $ $ DELIMITER ; 
 
 DROP TRIGGER IF EXISTS `apirest`.`orden_detalles_AFTER_DELETE`;
 
@@ -184,7 +184,7 @@ SET
 WHERE
   id = OLD.idorden;
 
-END $ $ DELIMITER;
+END $ $ DELIMITER ;
 
 /*triguer para asignar orden pendiente a usuario*/
 DROP TRIGGER IF EXISTS `apirest`.`ordenes_AFTER_INSERT`;
@@ -200,7 +200,7 @@ set
 where
   id = NEW.idcliente;
 
-END $ $ DELIMITER;
+END $ $ DELIMITER ;
 
 /*triguer encargado de eliminar orden pendiente cuando ya este cerrada*/
 DROP TRIGGER IF EXISTS `apirest`.`ordenes_BEFORE_UPDATE`;
@@ -217,7 +217,7 @@ where
 
 END IF;
 
-END $ $ DELIMITER;
+END $ $ DELIMITER ; 
 
 ALTER TABLE
   `apirest`.`clientes`
@@ -251,3 +251,12 @@ ADD
   COLUMN `comunicaciones` TINYINT(1) NOT NULL DEFAULT 0
 AFTER
   `terminos`;
+
+/*cambios realizados 2020-09-01*/
+
+ALTER TABLE `clientes` ADD UNIQUE(`email`);
+
+ALTER TABLE `ordenes` CHANGE `total` `total` DOUBLE NOT NULL DEFAULT '0'
+ALTER TABLE `ordenes` CHANGE `finalizada` `finalizada` TINYINT(1) NOT NULL DEFAULT '0';
+
+CREATE PROCEDURE `nueva_orden`(IN `_idcliente` INT, IN `_codigoarticulo` DOUBLE, IN `_preciound` DOUBLE, IN `_cantidad` INT, IN `_nombrearticulo` VARCHAR(50), IN `_embalajearticulo` VARCHAR(15)) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER BEGIN INSERT INTO ordenes(idcliente)VALUES(_idcliente); INSERT INTO `orden_detalles`(`codigoarticulo`, `preciound`, `cantidad`, `nombrearticulo`, `embalajearticulo`, `idorden`) VALUES (_codigoarticulo,_preciound,_cantidad,_nombrearticulo,_embalajearticulo,LAST_INSERT_ID()); END

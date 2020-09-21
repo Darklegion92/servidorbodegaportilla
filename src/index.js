@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const passport = require("passport");
 const authRouter = require("./routes/Auth.routes");
+const carritoRouter = require("./routes/Carrito.routes");
 const parametrosRouter = require("./routes/Parametros.routes");
 const articulosRouter = require("./routes/Articulos.routes");
 const contactenosRouter = require("./routes/Contactenos.routes");
@@ -30,9 +31,9 @@ app.use(passport.session());
 //Routes
 app.use("/", clientesRouter);
 app.use("/parametros", parametrosRouter);
+app.use("/carrito", authRouter, carritoRouter);
 app.use("/articulos", articulosRouter);
 app.use("/contactenos", contactenosRouter);
-
 
 //Public
 app.use(express.static(path.join(__dirname, "public")));
