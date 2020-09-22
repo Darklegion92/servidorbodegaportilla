@@ -2,7 +2,7 @@ module.exports ={
     database:{
         host:'localhost',
         user:'root',
-        password:'',
+        password:'J1090452931l$.',
         database:'apirest',
     },
     SECRET_TOKEN:"SOLTEC"

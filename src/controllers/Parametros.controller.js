@@ -1,6 +1,36 @@
 const pool = require("../config/database");
 const Services = require("../services");
 
+async function consultarBarrios(req, res) {
+  res.setHeader("Content-Type", "application/json");
+
+  try {
+    const datos = await pool.query("SELECT * FROM barrios");
+
+    if (datos.length > 0) {
+      res.status(200).send(datos);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
+
+async function consultartiposdocumento(req, res) {
+  res.setHeader("Content-Type", "application/json");
+
+  try {
+    const datos = await pool.query("SELECT * FROM tipos_documento");
+
+    if (datos.length > 0) {
+      res.status(200).send(datos);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
+
 async function consultarcarusel(req, res) {
   res.setHeader("Content-Type", "application/json");
 
@@ -61,7 +91,7 @@ async function consultarmarcas(req, res) {
 }
 async function consultarsubgrupos(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const {idgrupo} = req.params;
+  const { idgrupo } = req.params;
   try {
     const datos = await pool.query("SELECT * FROM subgrupos where idgrupo=?", [
       idgrupo,
@@ -376,5 +406,7 @@ module.exports = {
   consultargrupos,
   consultarmarcas,
   consultarsubgrupos,
+  consultartiposdocumento,
+  consultarBarrios,
   error,
 };

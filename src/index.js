@@ -28,12 +28,12 @@ app.use(passport.session());
 
 //Global Variables
 
-//Routes
-app.use("/", clientesRouter);
+//Route
 app.use("/parametros", parametrosRouter);
 app.use("/carrito", authRouter, carritoRouter);
 app.use("/articulos", articulosRouter);
 app.use("/contactenos", contactenosRouter);
+app.use("/", clientesRouter);
 
 //Public
 app.use(express.static(path.join(__dirname, "public")));

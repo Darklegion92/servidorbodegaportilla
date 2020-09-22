@@ -34,6 +34,23 @@ async function consultar(req, res) {
   }
 }
 
+async function consultarNombre(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  const { nombre } = req.params;
+  try {
+    let sql = "select * from articulos where nombre like ?";
+
+    const datos = await pool.query(sql, ["%" + nombre + "%"]);
+
+    if (datos.length > 0) {
+      res.status(200).send(datos);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
+
 function error(req, res) {
   res.setHeader("Content-Type", "application/json");
   res.status(404).send({ mensaje: "Página no encontrada" });
@@ -41,5 +58,6 @@ function error(req, res) {
 
 module.exports = {
   consultar,
+  consultarNombre,
   error,
 };

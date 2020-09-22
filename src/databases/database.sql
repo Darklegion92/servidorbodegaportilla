@@ -252,7 +252,7 @@ ADD
 AFTER
   `terminos`;
 
-/*cambios realizados 2020-09-01*/
+/*cambios realizados 2020-09-21*/
 
 ALTER TABLE `clientes` ADD UNIQUE(`email`);
 
