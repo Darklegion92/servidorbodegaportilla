@@ -25,14 +25,12 @@ async function crear(req, res) {
 
 async function ingresar(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { usuario, password } = req.body.values;
-
+  const { usuario, password } = req.body.datos;
   try {
     const datos = await pool.query(
       "SELECT * FROM usuarios WHERE usuario =? AND password=?",
       [usuario, password]
     );
-
     if (datos.length > 0) {
       const token = Sercices.createToken(datos);
       res.status(200).send({ token, usuario: datos[0] });
