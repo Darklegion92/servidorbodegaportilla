@@ -34,8 +34,9 @@ app.use("/parametros", parametrosRouter);
 app.use("/carrito", authRouter, carritoRouter);
 app.use("/articulos", articulosRouter);
 app.use("/contactenos", contactenosRouter);
-app.use("/", clientesRouter);
 app.use("/admin", authRouter);
+app.use("/clientes", clientesRouter);
+
 
 //Public
 app.use(express.static(path.join(__dirname, "public")));
