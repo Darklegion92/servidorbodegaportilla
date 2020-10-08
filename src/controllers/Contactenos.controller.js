@@ -1,13 +1,14 @@
 var nodemailer = require("nodemailer");
 
 function enviarContacto(req, res) {
-  const { nombre, email, celular, mensaje } = req.body;
+  const { nombre, email, telefono, comunicaciones, mensaje } = req.body;
+  console.log(req.body);
 
   console.log("Creating transport...");
   var transporter = nodemailer.createTransport({
     service: "gmail", //al usar un servicio bien conocido, no es necesario proveer un nombre de servidor.
     auth: {
-      user: "envio.contactosportilla@gmail.com",
+      user: "contactos.portilla@gmail.com",
       pass: "B123456789p.",
     },
   });
@@ -23,16 +24,18 @@ function enviarContacto(req, res) {
       "Nombre: " +
       nombre +
       "\n" +
-      "Celular: " +
-      celular +
+      "Teléfono: " +
+      telefono +
+      "\n" +
+      "Aceptó recibir Comunicaciones:" +
+      comunicaciones +
+      "\n" +
+      "Aceptó políticas, Termínos y Condiciones: true" +
       "\n" +
       "Mensaje: " +
       mensaje,
   };
-
-  console.log("sending email", mailOptions);
   transporter.sendMail(mailOptions, function (error, info) {
-    console.log("senMail returned!");
     if (error) {
       console.log("ERROR!!!!!!", error);
       res.status(501).send({ mensaje: "Error interno no se ha podido enviar" });

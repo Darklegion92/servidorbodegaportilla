@@ -4,8 +4,12 @@ const ClientesCtrl = require("../controllers/Clientes.controller");
 
 router = Router();
 router
-  .get("/login", ClientesCtrl.login)
+  .post("/login", ClientesCtrl.login)
+
+  .post("/loginfacebook", ClientesCtrl.loginFacebook)
+  .post("/logingoogle", ClientesCtrl.loginGoogle)
   .post("/register", ClientesCtrl.registro)
-  .get("/*", ClientesCtrl.error)
+  .get("/validar", Auth.isAuth, ClientesCtrl.validarToken)
+  .get("/*", ClientesCtrl.error);
 
 module.exports = router;

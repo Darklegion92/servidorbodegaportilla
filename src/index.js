@@ -10,7 +10,8 @@ const parametrosRouter = require("./routes/Parametros.routes");
 const articulosRouter = require("./routes/Articulos.routes");
 const contactenosRouter = require("./routes/Contactenos.routes");
 const clientesRouter = require("./routes/Clientes.routes");
-const AuthRouter  =require("./routes/Auth.routes")
+const cuponRouter = require("./routes/Cupon.routes");
+const AuthRouter = require("./routes/Auth.routes");
 const { isAuth } = require("./middlewares/acceso");
 
 //initializations
@@ -36,7 +37,7 @@ app.use("/articulos", articulosRouter);
 app.use("/contactenos", contactenosRouter);
 app.use("/admin", authRouter);
 app.use("/clientes", clientesRouter);
-
+app.use("/cupon", cuponRouter);
 
 //Public
 app.use(express.static(path.join(__dirname, "public")));

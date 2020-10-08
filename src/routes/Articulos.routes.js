@@ -5,7 +5,7 @@ const ArticulosCtrl = require("../controllers/Articulos.controller");
 router = Router();
 router
   .get("/", ArticulosCtrl.consultar)
-  .get("/:nombre", ArticulosCtrl.consultarNombre)
+  .get("/categoria", ArticulosCtrl.consultarCategoria)
   .get("/*", ArticulosCtrl.error);
 
 module.exports = router;
