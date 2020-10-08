@@ -1,25 +1,18 @@
 const pool = require("../config/database");
 
-async function guardar(req, res) {
+async function guardarCarrito(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const {
-    idcliente,
-    codigoarticulo,
-    preciound,
-    cantidad,
-    nombrearticulo,
-    embalajearticulo,
-  } = req.body;
-
+  const { user, carrito, datosOrden } = req.body;
+  let idorden;
   try {
-    await pool.query("CALL nueva_orden(?,?,?,?,?,?)", [
-      idcliente,
-      codigoarticulo,
-      preciound,
-      cantidad,
-      nombrearticulo,
-      embalajearticulo,
-    ]);
+ /*  if(user){
+        idorden = user.idorden;
+        
+    }else{
+        const orden = await pool.query("INSERT INTO ordenes(idcliente,total,nombrecliente,apellidoscliente,telefonocliente,telefono2cliente,idtipodocumento,documentocliente,direccioncliente,idbarrio)"+
+        "VALUE(?,?,?,?,?,?,?,?,?,?,?)",[])
+        idorden = orden.insertId
+    }*/
 
     res.status(200).send({ mensaje: "Orden creada correctamente" });
   } catch (e) {
@@ -167,10 +160,9 @@ function error(req, res) {
 }
 
 module.exports = {
-  guardar,
   agregarItem,
   eliminarItem,
   editarItem,
-  validar,
+  guardarCarrito,
   error,
 };
