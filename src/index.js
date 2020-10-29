@@ -18,7 +18,7 @@ const { isAuth } = require("./middlewares/acceso");
 const app = express();
 require("./lib/passport");
 //settings
-app.set("port", process.env.PORT || 3002);
+app.set("port", process.env.PORT || 3005);
 
 //middlewares
 app.use(cors());
@@ -43,5 +43,5 @@ app.use("/cupon", cuponRouter);
 app.use(express.static(path.join(__dirname, "public")));
 //Starting the server
 app.listen(app.get("port"), () => {
-  console.log("Servidor Corriendo en el puerto " + app.get("port"));
+    console.log("Servidor Corriendo en el puerto " + app.get("port"));
 });
