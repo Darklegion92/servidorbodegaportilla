@@ -6,15 +6,20 @@ async function obtenerBancos (req, res) {
   try {
     const bancos = await axios.get(
       'https://noccapi-stg.globalpay.com.co/banks/PSE/',
-      { headers: { pm_token: AuthToken } }
+      { headers: { 'auth-token': AuthToken } }
     )
-    console.log(bancos)
     res.status(200).send(bancos.data)
   } catch (e) {
     res.status(500).send(e)
   }
 }
 
+function error (req, res) {
+  res.setHeader('Content-Type', 'application/json')
+  res.status(404).send({ mensaje: 'Página no encontrada' })
+}
+
 module.exports = {
-  obtenerBancos
+  obtenerBancos,
+  error
 }
