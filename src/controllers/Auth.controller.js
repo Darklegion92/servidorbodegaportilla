@@ -1,5 +1,5 @@
 const pool = require("../config/database");
-const Sercices = require("../services");
+const Services = require("../services");
 
 async function crear(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -16,7 +16,7 @@ async function crear(req, res) {
     const resp = await pool.query("INSERT INTO usuarios SET ? ", [
       nuevoUsuario,
     ]);
-    const token = Sercices.createToken(resp);
+    const token = Services.createToken(resp);
     res.status(200).send({ token, usuario: resp[0] });
   } catch (e) {
     res.status(501).send({ mensaje: "Error: " + e });
@@ -32,7 +32,7 @@ async function ingresar(req, res) {
       [usuario, password]
     );
     if (datos.length > 0) {
-      const token = Sercices.createToken(datos);
+      const token = Services.createToken(datos);
       res.status(200).send({ token, usuario: datos[0] });
     } else
       res.status(201).send({ mensaje: "Usuario o Contraseña Incorrectos" });

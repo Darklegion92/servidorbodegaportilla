@@ -1,29 +1,32 @@
-const jwt = require("jsonwebtoken");
-const moment = require("moment");
-const keys = require("../config/keys");
+const jwt = require('jsonwebtoken')
+const moment = require('moment')
+const keys = require('../config/keys')
 
-function createToken(usuario) {
-
+function createToken (usuario) {
   const payload = {
-    sub: usuario[0].id+ "J" + usuario[0].fechacreacion,
+    sub: usuario[0].id + 'J' + usuario[0].fechacreacion,
     iat: moment().unix(),
-    exp: moment().add(1, "days").unix(),
-  };
+    exp: moment()
+      .add(1, 'days')
+      .unix()
+  }
 
-  return jwt.sign(payload, keys.SECRET_TOKEN);
+  return jwt.sign(payload, keys.SECRET_TOKEN)
 }
 
-async function decodeToken(token) {
+async function decodeToken (token) {
+  token = token.replace('"', '').replace('"', '')
   try {
-    const payload = await jwt.decode(token, keys.SECRET_TOKEN);
-    if (payload.exp >= moment().unix()) return payload.sub.split("J")[0];
-    return 401;
+    const payload = await jwt.decode(token, keys.SECRET_TOKEN)
+    if (payload.exp >= moment().unix()) return payload.sub.split('J')[0]
+    return 401
   } catch (e) {
-    return 500;
+    console.log(e)
+    return 500
   }
 }
 
 module.exports = {
   createToken,
-  decodeToken,
-};
+  decodeToken
+}
