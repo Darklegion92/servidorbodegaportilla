@@ -123,6 +123,7 @@ async function consultartiposdocumento(req, res) {
     console.log(e);
   }
 }
+
 async function eliminarcarusel(req, res) {
   try {
     const { id } = req.params;
@@ -184,7 +185,6 @@ async function agregarcarusel(req, res) {
 
 async function editarcarusel(req, res) {
   const { img, imgmovil, idgrupo, idcarusel } = req.body;
-  console.log(req.body);
   try {
     img1 = "img/carusel/" + img;
     imgmovil1 = "img/carusel/movil/" + imgmovil;
@@ -192,23 +192,26 @@ async function editarcarusel(req, res) {
     let sql = "UPDATE carusel set img=?, imgmovil=?, idgrupo=? where id=? ";
     let params = [img1, imgmovil1, idgrupo, idcarusel];
 
-    if (img1 === null && imgmovil === null && idgrupo === null) {
+    if (img === null && imgmovil === null && idgrupo === null) {
       res.status(201).send({ mensaje: "sin cambios a realizar" });
-    } else if (img1 === null && imgmovil === null) {
+    } else if (img !== null && imgmovil !== null) {
       sql = "UPDATE carusel set img=?, imgmovil=? where id=? ";
       params = [img1, imgmovil1, idcarusel];
-    } else if (img1 === null) {
+    } else if (img !== null) {
       sql = "UPDATE carusel set img=? where id=? ";
       params = [img1, idcarusel];
-    } else if (img1 === null && idgrupo === null) {
+    } else if (img !== null && idgrupo !== null) {
       sql = "UPDATE carusel set img=?, idgrupo=? where id=? ";
       params = [img1, idgrupo, idcarusel];
-    } else if (idgrupo === null && imgmovil === null) {
+    } else if (idgrupo !== null && imgmovil !== null) {
       sql = "UPDATE carusel set idgrupo=?, imgmovil=? where id=? ";
       params = [idgrupo, imgmovil1, idcarusel];
-    } else if (idgrupo === null) {
+    } else if (idgrupo !== null) {
       sql = "UPDATE carusel set idgrupo=? where id? ";
       params = [idgrupo, idcarusel];
+    } else if (imgmovil !== null) {
+      sql = "UPDATE carusel set imgmovil=? where id? ";
+      params = [imgmovil1, idcarusel];
     }
     const add = await pool.query(sql, params);
 
@@ -224,11 +227,9 @@ async function editarcarusel(req, res) {
               "src/public/img/carusel/movil/" + imgmovil,
               (err) => {
                 if (err) res.status(502).send({ error: err });
-                else res.status(200).send({ mensaje: "ok" });
                 return;
               }
             );
-          else res.status(200).send({ mensaje: "ok" });
           return;
         }
       );
@@ -238,12 +239,66 @@ async function editarcarusel(req, res) {
         "src/public/img/carusel/movil/" + imgmovil,
         (err) => {
           if (err) res.status(502).send({ error: err });
-          else res.status(200).send({ mensaje: "ok" });
           return;
         }
       );
 
     res.status(200).send({ mensaje: "ok" });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+async function editarrecomendacion(req, res) {
+  const { data, img, imgant, id } = req.body;
+  const { titulo, texto } = data;
+  try {
+    let img1 = "img/secciones/" + img;
+    console.log(req.body);
+    let sql = "UPDATE recomendaciones set img=?, titulo=?, texto=? where id=? ";
+    let params = [img1, titulo, texto, id];
+
+    if (img === null && titulo === null && texto === null) {
+      res.status(201).send({ mensaje: "sin cambios a realizar" });
+    } else if (img !== null && titulo !== null) {
+      sql = "UPDATE recomendaciones set img=?, titulo=? where id=?  ";
+      params = [img1, titulo, id];
+    } else if (img !== null) {
+      sql = "UPDATE recomendaciones set img=? where id=? ";
+      params = [img1, id];
+    } else if (img !== null && texto !== null) {
+      sql = "UPDATE recomendaciones set img=?, texto=? where id=? ";
+      params = [img, texto, id];
+    } else if (texto !== null && titulo !== null) {
+      console.log("lo hice");
+      sql = "UPDATE recomendaciones set texto=?, titulo=? where id=? ";
+      params = [texto, titulo, id];
+    } else if (texto !== null) {
+      sql = "UPDATE recomendaciones set texto=? where id? ";
+      params = [texto, id];
+    } else if (titulo !== null) {
+      sql = "UPDATE recomendaciones set titulo=? where id? ";
+      params = [titulo, id];
+    }
+    await pool.query(sql, params);
+
+    if (img && img !== null) {
+      console.log(img);
+      fsE.move(
+        "src/public/temp/" + img,
+        "src/public/img/secciones/" + img,
+        (err) => {
+          if (err) res.status(502).send({ error: err });
+          else {
+            res.status(200).send({ mensaje: "ok" });
+            fs.unlink("src/public/" + imgant);
+          }
+          return;
+        }
+      );
+    } else {
+      res.status(200).send({ mensaje: "ok" });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -256,6 +311,7 @@ function error(req, res) {
 
 module.exports = {
   consultarcarusel,
+  editarrecomendacion,
   eliminarcarusel,
   consultarrecomendaciones,
   consultargrupos,

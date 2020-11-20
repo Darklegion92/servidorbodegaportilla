@@ -6,6 +6,7 @@ router = Router();
 router
   .get("/", ArticulosCtrl.consultar)
   .get("/categoria", ArticulosCtrl.consultarCategoria)
+  .get("/consultar", ArticulosCtrl.consultarCodigo)
   .get("/*", ArticulosCtrl.error);
 
 module.exports = router;

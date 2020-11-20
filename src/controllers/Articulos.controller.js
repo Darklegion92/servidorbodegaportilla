@@ -69,6 +69,23 @@ async function consultar(req, res) {
   }
 }
 
+async function consultarCodigo(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  const { codigo } = req.query;
+  console.log(codigo);
+  try {
+    const datos = await pool.query("select * from articulos where codigo = ?", [
+      codigo,
+    ]);
+    if (datos.length > 0) {
+      res.status(200).send(datos[0]);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
+
 function error(req, res) {
   res.setHeader("Content-Type", "application/json");
   res.status(404).send({ mensaje: "Página no encontrada" });
@@ -77,5 +94,6 @@ function error(req, res) {
 module.exports = {
   consultar,
   consultarCategoria,
+  consultarCodigo,
   error,
 };

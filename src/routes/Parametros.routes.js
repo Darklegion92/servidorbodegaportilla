@@ -15,6 +15,7 @@ router
   .post("/subirimg", Auth.isAuth, ParametrosCtrl.subirimg)
   .post("/carusel", Auth.isAuth, ParametrosCtrl.agregarcarusel)
   .put("/carusel", Auth.isAuth, ParametrosCtrl.editarcarusel)
+  .put("/recomendaciones", Auth.isAuth, ParametrosCtrl.editarrecomendacion)
   .get("/*", ParametrosCtrl.error);
 
 module.exports = router;
