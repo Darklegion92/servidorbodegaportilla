@@ -12,8 +12,10 @@ const articulosRouter = require("./routes/Articulos.routes");
 const contactenosRouter = require("./routes/Contactenos.routes");
 const clientesRouter = require("./routes/Clientes.routes");
 const cuponRouter = require("./routes/Cupon.routes");
+const pasarelaRouter = require("./routes/GlobalPay.routes");
 const AuthRouter = require("./routes/Auth.routes");
 const { isAuth } = require("./middlewares/acceso");
+const { bancospse } = require("./services/bancospse");
 
 //initializations
 const app = express();
@@ -22,6 +24,7 @@ const options = {
   uploadDir: path.join(__dirname, "public/temp"),
   autoClean: false,
 };
+bancospse();
 
 //settings
 app.set("port", process.env.PORT || 3005);
@@ -52,6 +55,7 @@ app.use("/contactenos", contactenosRouter);
 app.use("/admin", authRouter);
 app.use("/clientes", clientesRouter);
 app.use("/cupon", cuponRouter);
+app.use("/pasarela", pasarelaRouter);
 
 //Public
 app.use(express.static(path.join(__dirname, "public")));

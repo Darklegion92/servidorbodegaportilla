@@ -1,6 +1,7 @@
 const pool = require("../config/database");
 const fs = require("fs").promises;
 const fsE = require("fs-extra");
+const e = require("express");
 
 async function consultarBarrios(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -142,6 +143,19 @@ async function eliminarcarusel(req, res) {
     console.log(e);
   }
   res.status(200).send({ mensaje: "ok" });
+}
+
+async function consultarBancosPSE(req, res) {
+  res.setHeader("Content-Type", "application/json");
+
+  try {
+    const bancos = await pool.query("SELECT * FROM bancospse");
+    bancos.shift();
+    res.status(200).send(bancos);
+  } catch (error) {
+    res.status(500).send(error);
+    console.log(e);
+  }
 }
 
 async function subirimg(req, res) {
@@ -322,5 +336,6 @@ module.exports = {
   editarcarusel,
   agregarcarusel,
   subirimg,
+  consultarBancosPSE,
   error,
 };

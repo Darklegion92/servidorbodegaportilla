@@ -4,6 +4,7 @@ const ParametrosCtrl = require("../controllers/Parametros.controller");
 
 router = Router();
 router
+  .get("/bancospse", ParametrosCtrl.consultarBancosPSE)
   .get("/barrios", ParametrosCtrl.consultarBarrios)
   .get("/tiposdocumento", ParametrosCtrl.consultartiposdocumento)
   .get("/carusel", ParametrosCtrl.consultarcarusel)
