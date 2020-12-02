@@ -1,6 +1,4 @@
 const express = require('express')
-const fs = require('fs')
-const https = require('https')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const formData = require('express-form-data')
@@ -19,25 +17,6 @@ const AuthRouter = require('./routes/Auth.routes')
 const { isAuth } = require('./middlewares/acceso')
 const { bancospse } = require('./services/bancospse')
 
-//certificacion
-const privateKey = fs.readFileSync(
-  '/etc/letsencrypt/live/yourdomain.com/privkey.pem',
-  'utf8'
-)
-const certificate = fs.readFileSync(
-  '/etc/letsencrypt/live/yourdomain.com/cert.pem',
-  'utf8'
-)
-const ca = fs.readFileSync(
-  '/etc/letsencrypt/live/yourdomain.com/chain.pem',
-  'utf8'
-)
-const credentials = {
-  key: privateKey,
-  cert: certificate,
-  ca: ca
-}
-
 //initializations
 const app = express()
 require('./lib/passport')
@@ -47,15 +26,8 @@ const options = {
 }
 bancospse()
 
-//inicializacion https
-const httpsServer = https.createServer(credentials, app)
-
-httpsServer.listen(443, () => {
-  console.log('HTTPS Server running on port 443')
-})
-
 //settings
-app.set('port', process.env.PORT || 3005)
+app.set('port', process.env.PORT || 80)
 
 //middlewares
 app.use(cors())
