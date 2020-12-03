@@ -14,16 +14,14 @@ const bancospse = () =>
           'https://noccapi-stg.globalpay.com.co/banks/PSE/',
           { headers: { 'auth-token': AuthToken } }
         )
-        console.log(json)
-        const bancos = json.data.banks
-
-        /*  await pool.query('DELETE FROM bancospse')
-        bancos.forEach(async banco => {
-          await pool.query('INSERT INTO bancospse SET ?', banco)
-        })*/
-      } catch (e) {
-        // console.log(e)
-      }
+        if (json.status === 200) {
+          const bancos = json.data.banks
+          await pool.query('TRUNCATE bancospse')
+          await bancos.forEach(async banco => {
+            await pool.query('INSERT INTO bancospse set ?', banco)
+          })
+        }
+      } catch (e) {}
     },
     null,
     true
