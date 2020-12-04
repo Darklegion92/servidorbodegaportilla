@@ -68,17 +68,65 @@ async function guardarCarrito(req, res) {
         total,
         idorden
       );
-      if (resp.status === 200)
+      if (resp.status === 200) {
         await pool.query(
           "UPDATE ordenes set finalizada=1, idtipo_pago=4,numeropago=? where id=?",
           [resp.data.transaction.id, idorden]
         );
-      res.status(200).send(resp.data.transaction.bank_url);
+        res.status(200).send({ url: resp.data.transaction.bank_url });
+      } else {
+        res.status(201).send({ mensaje: "Error" });
+      }
+    } else if (tipoPago === "efecty") {
+      resp = await pagoEfectivo(AuthToken, total);
+      //console.log(resp);
+      if (resp.status === 200)
+        await pool.query(
+          "UPDATE ordenes set finalizada=1, idtipo_pago=2,numeropago=? where id=?",
+          [resp.data.transaction.id, idorden]
+        );
+      console.log(resp);
+      res.status(200).send({
+        url: "http://localhost:3000/pagoefectivo/",
+        datos: resp.data,
+        orden: datosOrden,
+      });
     } else {
       res.status(200).send({ mensaje: "Orden creada correctamente" });
     }
   } catch (e) {
     res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
+
+async function pagoEfectivo(AuthToken, total) {
+  try {
+    const resp = await axios.post(
+      "https://noccapi-stg.globalpay.com.co/order/",
+      {
+        carrier: {
+          id: "payvalida",
+        },
+        user: {
+          id: "soltec",
+          email: "soltec_cucuta@hotmail.com",
+        },
+        order: {
+          country: "COL",
+          currency: "COP",
+          dev_reference: "Compra Insumos Bodega Portilla",
+          amount: total,
+          vat: 0,
+          description: "Compras SOLTEC - PORTILLA",
+          expiration_days: 4,
+          recurrent: false,
+        },
+      },
+      { headers: { "auth-token": AuthToken } }
+    );
+    return resp;
+  } catch (e) {
     console.log(e);
   }
 }
@@ -99,7 +147,7 @@ async function pagoPSE(
           id: "PSE",
           extra_params: {
             bank_code: datosPago.banco,
-            response_url: "http://localhost:3000/" + idorden,
+            response_url: "http://localhost:3000/orden/" + idorden,
             user: {
               name: nombres + " " + apellidos,
               fiscal_number: documento,
