@@ -1,121 +1,162 @@
-const axios = require('axios')
+const axios = require("axios");
 
-async function pagoPSE (req, res) {
-  const { AuthToken } = req
+async function pagoPSE(req, res) {
+  const { AuthToken } = req;
   try {
     const resp = await axios.post(
-      'https://noccapi-stg.globalpay.com.co/order/',
+      "https://noccapi-stg.globalpay.com.co/order/",
       {
         carrier: {
-          id: 'PSE',
+          id: "PSE",
           extra_params: {
-            bank_code: '1022',
-            response_url: 'https://www.rbmcolombia.com/wps/portal/index/',
+            bank_code: "1022",
+            response_url: "https://www.rbmcolombia.com/wps/portal/index/",
             user: {
-              name: 'Santiago Sierra',
+              name: "Santiago Sierra",
               fiscal_number: 12312312313,
-              type: 'N',
-              type_fis_number: 'CC',
-              ip_address: '201.0.90.12'
-            }
-          }
+              type: "N",
+              type_fis_number: "CC",
+              ip_address: "201.0.90.12",
+            },
+          },
         },
         user: {
-          id: 'sdf',
-          email: 'user@example.com'
+          id: "sdf",
+          email: "user@example.com",
         },
         order: {
-          country: 'COL',
-          currency: 'COP',
-          dev_reference: 'zapato nike',
+          country: "COL",
+          currency: "COP",
+          dev_reference: "zapato nike",
           amount: 56646,
           vat: 0,
-          description: 'prueba'
-        }
+          description: "prueba",
+        },
       },
-      { headers: { 'auth-token': AuthToken } }
-    )
-    if (resp.status === 200) res.status(200).send(resp.data)
+      { headers: { "auth-token": AuthToken } }
+    );
+    if (resp.status === 200) res.status(200).send(resp.data);
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
 }
 
-async function pagoCredito (req, res) {
-  const { AuthToken } = req
+async function pagoCredito(req, res) {
+  const { AuthToken } = req;
   try {
     const resp = await axios.post(
-      'https://ccapi-stg.globalpay.com.co/v2/transaction/debit_cc',
+      "https://ccapi-stg.globalpay.com.co/v2/card/add",
       {
         user: {
-          id: '4',
-          email: 'user@example.com'
+          id: "1",
+
+          email: "ssierra.ext@rbm.com.co",
         },
-        order: {
-          amount: 11.1,
-          description: 'una paleta',
-          vat: 0,
-          dev_reference: 'referencia'
-        },
+
         card: {
-          number: '4507000397186651',
-          holder_name: 'citlali calderon',
+          number: "4111111111111111",
+
+          holder_name: "SANTIAGO SIERRA",
+
           expiry_month: 9,
-          expiry_year: 2020,
-          cvc: '123',
-          type: 'vi'
-        }
+
+          expiry_year: 2022,
+
+          cvc: "123",
+
+          type: "vi",
+        },
       },
-      { headers: { 'auth-token': AuthToken } }
-    )
-    if (resp.status === 200) res.status(200).send(resp.data)
+
+      { headers: { "auth-token": AuthToken } }
+    );
+    if (resp.status === 200) res.status(200).send(resp.data);
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
 }
 
-async function pagoEfectivo (req, res) {
-  const { AuthToken } = req
+async function eliminarTarjeta(req, res) {
+  const { AuthToken } = req;
   try {
     const resp = await axios.post(
-      'https://noccapi-stg.globalpay.com.co/order/',
+      "https://ccapi-stg.globalpay.com.co/v2/card/delete/",
+      {
+        card: {
+          token: "15716740815297352678",
+        },
+
+        user: {
+          id: "1",
+        },
+      },
+
+      { headers: { "auth-token": AuthToken } }
+    );
+    if (resp.status === 200) res.status(200).send(resp.data);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+}
+
+async function obtenerTarjetas(req, res) {
+  const { AuthToken } = req;
+  try {
+    const resp = await axios.get(
+      "https://ccapi-stg.globalpay.com.co/v2/card/list?uid=1",
+
+      { headers: { "auth-token": AuthToken } }
+    );
+    if (resp.status === 200) res.status(200).send(resp.data);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+}
+
+async function pagoEfectivo(req, res) {
+  const { AuthToken } = req;
+  try {
+    const resp = await axios.post(
+      "https://noccapi-stg.globalpay.com.co/order/",
       {
         carrier: {
-          id: 'payvalida'
+          id: "payvalida",
         },
         user: {
-          id: '10',
-          email: 'dmedina@paymentez.com'
+          id: "10",
+          email: "dmedina@paymentez.com",
         },
         order: {
-          country: 'COL',
-          currency: 'COP',
-          dev_reference: 'test-stg-00001',
+          country: "COL",
+          currency: "COP",
+          dev_reference: "test-stg-00001",
           amount: 50002,
           expiration_days: 4,
           recurrent: false,
-          description: 'Esto es una prueba en stg para integración de Cash'
-        }
+          description: "Esto es una prueba en stg para integración de Cash",
+        },
       },
-      { headers: { 'auth-token': AuthToken } }
-    )
-    console.log(resp.data)
-    if (resp.status === 200) res.status(200).send(resp.data)
+      { headers: { "auth-token": AuthToken } }
+    );
+    console.log(resp.data);
+    if (resp.status === 200) res.status(200).send(resp.data);
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
 }
-function error (req, res) {
-  res.setHeader('Content-Type', 'application/json')
-  res.status(404).send({ mensaje: 'Página no encontrada' })
+function error(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.status(404).send({ mensaje: "Página no encontrada" });
 }
 
 module.exports = {
   pagoPSE,
   pagoEfectivo,
   pagoCredito,
-  error
-}
+  error,
+};
