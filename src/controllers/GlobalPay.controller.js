@@ -46,30 +46,26 @@ async function pagoCredito (req, res) {
   const { AuthToken } = req
   try {
     const resp = await axios.post(
-      'https://ccapi-stg.globalpay.com.co/v2/transaction/debit_cc',
+      'https://ccapi-stg.globalpay.com.co/v2/card/add',
       {
         user: {
-          id: '4',
-          email: 'user@example.com'
+          id: '1',
+          email: 'ssierra.ext@rbm.com.co'
         },
-        order: {
-          amount: 11.1,
-          description: 'una paleta',
-          vat: 0,
-          dev_reference: 'referencia'
-        },
+
         card: {
-          number: '4507000397186651',
-          holder_name: 'citlali calderon',
+          number: '4111111111111111',
+          holder_name: 'SANTIAGO SIERRA',
           expiry_month: 9,
-          expiry_year: 2020,
+          expiry_year: 2022,
           cvc: '123',
           type: 'vi'
         }
       },
       { headers: { 'auth-token': AuthToken } }
     )
-    if (resp.status === 200) res.status(200).send(resp.data)
+    console.log(resp)
+    //if (resp.status === 200) res.status(200).send(resp.data)
   } catch (e) {
     console.log(e)
     res.status(500).send(e)
