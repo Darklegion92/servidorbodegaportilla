@@ -5,7 +5,7 @@ async function guardarCarrito(req, res) {
   res.setHeader("Content-Type", "application/json");
 
   const { user, carrito, datosOrden, datosPago, tipoPago } = req.body;
-  const { AuthToken } = req;
+  const { AuthToken, AuthTokenClient } = req;
   let idorden;
   try {
     if (user.idorden) {
@@ -90,8 +90,7 @@ async function guardarCarrito(req, res) {
         orden: datosOrden,
       });
     } else if (tipoPago === "credito") {
-      resp = await pagoCredito(AuthToken, datosPago, total);
-      console.log(resp);
+      resp = await pagoCredito(AuthToken, AuthTokenClient, datosPago, total);
       if (resp.status === 200) {
         await pool.query(
           "UPDATE ordenes set finalizada=1, idtipo_pago=3,numeropago=? where id=?",
@@ -129,12 +128,11 @@ async function pagoEfectivo(AuthToken, total) {
         order: {
           country: "COL",
           currency: "COP",
-          dev_reference: "Compra Insumos Bodega Portilla",
+          dev_reference: "prueba_stg_2",
           amount: total,
-          vat: 0,
-          description: "Compras SOLTEC - PORTILLA",
-          expiration_days: 4,
+          expiration_days: 5,
           recurrent: false,
+          description: "Esto es una prueba desde rest client",
         },
       },
       { headers: { "auth-token": AuthToken } }
@@ -192,7 +190,7 @@ async function pagoPSE(
   }
 }
 
-async function pagoCredito(AuthToken, datos, total) {
+async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
   try {
     //inscribir tarjeta
     const fecha = new Date(datos.fecha);
@@ -214,19 +212,17 @@ async function pagoCredito(AuthToken, datos, total) {
 
           expiry_year: fecha.getFullYear().toString().substring(2, 4),
 
-          cvc: datos.cvc,
+          cvc: datos.cvv,
 
-          type: datos.type,
+          type: "vi",
         },
       },
 
-      { headers: { "auth-token": AuthToken } }
+      { headers: { "auth-token": AuthTokenClient } }
     );
-    //pago con token
-
     if (jsonInscribir.status === 200) {
       const jsonPagar = await axios.post(
-        "https://ccapi-stg.globalpay.com.co/v2/card/add",
+        "https://ccapi-stg.globalpay.com.co/v2/transaction/debit/",
         {
           user: {
             id: "1",
@@ -270,7 +266,7 @@ async function pagoCredito(AuthToken, datos, total) {
   } catch (e) {
     console.log(e);
     // return "Error al procesar la tarjeta";
-    return {
+    /* return {
       status: 200,
       data: {
         transaction: {
@@ -295,7 +291,7 @@ async function pagoCredito(AuthToken, datos, total) {
           origin: "ORIGIN",
         },
       },
-    };
+    };*/
   }
 }
 
