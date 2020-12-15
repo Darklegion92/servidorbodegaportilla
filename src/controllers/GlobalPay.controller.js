@@ -46,7 +46,21 @@ async function pagoCredito (req, res) {
   const { AuthToken } = req
   try {
     const resp = await axios.post(
-      'https://ccapi-stg.globalpay.com.co/v2/card/add',
+      "https://ccapi-stg.globalpay.com.co/v2/card/delete/",
+      {
+        card: {
+          token: "15716740815297352678",
+        },
+
+        user: {
+          id: "1",
+        },
+      },
+
+      { headers: { "auth-token": AuthToken } }
+    );
+    /*const resp = await axios.post(
+      "https://ccapi-stg.globalpay.com.co/v2/card/add",
       {
         user: {
           id: '1',
@@ -61,13 +75,10 @@ async function pagoCredito (req, res) {
           type: 'vi'
         }
       },
-      { headers: { 'auth-token': AuthToken } }
-    ) /* await axios.get(
-      'https://ccapi-stg.globalpay.com.co/v2/card/list?uid=1',
-      { headers: { 'auth-token': AuthToken } }
-    )*/
-    console.log(resp)
-    if (resp.status === 200) res.status(200).send(resp.data)
+
+      { headers: { "auth-token": AuthToken } }
+    );*/
+    if (resp.status === 200) res.status(200).send(resp.data);
   } catch (e) {
     console.log(e)
     res.status(500).send(e)
