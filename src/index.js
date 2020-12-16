@@ -16,7 +16,7 @@ const pasarelaRouter = require('./routes/GlobalPay.routes')
 const { bancospse } = require('./services/bancospse')
 
 //initializations
-const app = express()
+var app = express()
 require('./lib/passport')
 const options = {
   uploadDir: path.join(__dirname, 'public/temp'),
@@ -24,7 +24,6 @@ const options = {
 }
 
 bancospse()
-
 //settings
 app.set('port', process.env.PORT || 80)
 
@@ -59,6 +58,9 @@ app.use('/pasarela', pasarelaRouter)
 //Public
 app.use(express.static(path.join(__dirname, 'public')))
 //Starting the server
-app.listen(app.get('port'), () => {
+/*app.listen(app.get('port'), () => {
   console.log('Servidor Corriendo en el puerto ' + app.get('port'))
-})
+})*/
+
+
+module.exports = app
