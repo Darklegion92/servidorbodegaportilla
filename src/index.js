@@ -4,8 +4,6 @@ const bodyParser = require('body-parser')
 const formData = require('express-form-data')
 const cors = require('cors')
 const path = require('path')
-const fs = require('fs')
-const https = require('https')
 const passport = require('passport')
 const authRouter = require('./routes/Auth.routes')
 const carritoRouter = require('./routes/Carrito.routes')
@@ -16,20 +14,6 @@ const clientesRouter = require('./routes/Clientes.routes')
 const cuponRouter = require('./routes/Cupon.routes')
 const pasarelaRouter = require('./routes/GlobalPay.routes')
 const { bancospse } = require('./services/bancospse')
-
-//https
-
-var https_options = {
-  key: fs.readFileSync('./certificates/llaveprivada.key'),
-
-  cert: fs.readFileSync('./certificates/tudominio.crt'),
-
-  ca: [
-    fs.readFileSync('./certificates/CA_root.crt'),
-
-    fs.readFileSync('./certificates/CA-bundle.crt')
-  ]
-}
 
 //initializations
 const app = express()
