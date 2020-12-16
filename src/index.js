@@ -17,22 +17,8 @@ const cuponRouter = require('./routes/Cupon.routes')
 const pasarelaRouter = require('./routes/GlobalPay.routes')
 const { bancospse } = require('./services/bancospse')
 
-//https
-
-var https_options = {
-  key: fs.readFileSync('./certificates/llaveprivada.key'),
-
-  cert: fs.readFileSync('./certificates/tudominio.crt'),
-
-  ca: [
-    fs.readFileSync('./certificates/CA_root.crt'),
-
-    fs.readFileSync('./certificates/CA-bundle.crt')
-  ]
-}
-
 //initializations
-const app = express()
+var app = express()
 require('./lib/passport')
 const options = {
   uploadDir: path.join(__dirname, 'public/temp'),
@@ -40,7 +26,6 @@ const options = {
 }
 
 bancospse()
-
 //settings
 app.set('port', process.env.PORT || 80)
 
@@ -75,6 +60,9 @@ app.use('/pasarela', pasarelaRouter)
 //Public
 app.use(express.static(path.join(__dirname, 'public')))
 //Starting the server
-app.listen(app.get('port'), () => {
+/*app.listen(app.get('port'), () => {
   console.log('Servidor Corriendo en el puerto ' + app.get('port'))
-})
+})*/
+
+
+module.exports = app

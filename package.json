@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node server.js -- --staging"
   },
   "author": "SOLTEC - Tecnologia y Desarrollo",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "express-validator": "^6.6.0",
     "filereader": "^0.10.3",
     "fs-extra": "^9.0.1",
+    "greenlock-express": "^4.0.3",
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
@@ -33,6 +34,7 @@
     "nodemailer": "^6.4.11",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "pm2": "^4.5.0",
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
