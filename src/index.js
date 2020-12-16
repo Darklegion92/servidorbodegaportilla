@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const formData = require('express-form-data')
 const cors = require('cors')
 const path = require('path')
+const fs = require('fs')
+const https = require('https')
 const passport = require('passport')
 const authRouter = require('./routes/Auth.routes')
 const carritoRouter = require('./routes/Carrito.routes')
@@ -15,7 +17,19 @@ const cuponRouter = require('./routes/Cupon.routes')
 const pasarelaRouter = require('./routes/GlobalPay.routes')
 const { bancospse } = require('./services/bancospse')
 
-const LetsEncrypt = require('greenlock-express')
+//https
+
+var https_options = {
+  key: fs.readFileSync('./certificates/llaveprivada.key'),
+
+  cert: fs.readFileSync('./certificates/tudominio.crt'),
+
+  ca: [
+    fs.readFileSync('./certificates/CA_root.crt'),
+
+    fs.readFileSync('./certificates/CA-bundle.crt')
+  ]
+}
 
 //initializations
 const app = express()
@@ -25,15 +39,6 @@ const options = {
   autoClean: false
 }
 
-LetsEncrypt.init({
-  packageRoot: __dirname,
-
-  // contact for security and critical bug notices
-  configDir: './greenlock.d',
-
-  // whether or not to run at cloudscale
-  cluster: false
-})
 bancospse()
 
 //settings
