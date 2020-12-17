@@ -58,9 +58,9 @@ app.use('/pasarela', pasarelaRouter)
 //Public
 app.use(express.static(path.join(__dirname, 'public')))
 //Starting the server
-app.listen(app.get('port'), () => {
+/*app.listen(app.get('port'), () => {
   console.log('Servidor Corriendo en el puerto ' + app.get('port'))
-})
+})*/
 
 
-//module.exports = app
+module.exports = app
