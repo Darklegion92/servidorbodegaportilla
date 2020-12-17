@@ -3,7 +3,6 @@
 
 #configuraciones
 /src/config/keys.js
-/src/public
 # dependencies
 /node_modules
 /.pnp
