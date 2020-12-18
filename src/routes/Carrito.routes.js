@@ -6,6 +6,7 @@ const CarritoCtrl = require("../controllers/Carrito.controller");
 router = Router();
 router
   .get("/consultar/:idorden", connectGlobalPlay, CarritoCtrl.consultar)
+  .get("/consultar", connectGlobalPlay, CarritoCtrl.consultarTodas)
   .put("/item", Auth.isAuth, CarritoCtrl.agregarItem)
   .post("/item/delete", Auth.isAuth, CarritoCtrl.eliminarItem)
   .post("/item/update", Auth.isAuth, CarritoCtrl.editarItem)

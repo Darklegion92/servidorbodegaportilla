@@ -8,7 +8,7 @@ router
   .get('/categoria', ArticulosCtrl.consultarCategoria)
   .get('/consultar', ArticulosCtrl.consultarCodigo)
   .put('/editar', isAuth, ArticulosCtrl.editar)
-  .put('/crear', isAuth, ArticulosCtrl.crear)
+  .post('/crear', isAuth, ArticulosCtrl.crear)
   .get('/*', ArticulosCtrl.error)
 
 module.exports = router
