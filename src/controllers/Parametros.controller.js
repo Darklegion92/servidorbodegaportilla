@@ -1,7 +1,7 @@
 const pool = require("../config/database");
 const fs = require("fs").promises;
 const fsE = require("fs-extra");
-const e = require("express");
+//const e = require("express");
 
 async function consultarBarrios(req, res) {
   res.setHeader("Content-Type", "application/json");
