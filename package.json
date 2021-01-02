@@ -4,7 +4,7 @@
   "description": "apirest aplicacion",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon src/index.js",
+    "test": "nodemon src/prueba.js",
     "start": "node apirest.js"
   },
   "author": "SOLTEC - Tecnologia y Desarrollo",
