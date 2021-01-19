@@ -122,7 +122,7 @@ async function consultarTodas(req, res) {
     "select o.*,e.nombre as estado,concat(nombrecliente,apellidoscliente) as cliente " +
     "from ordenes o,estados_pago e where o.idestado_pago = e.id";
   let params = [];
-  try {
+  //try {
     if (estado) {
       sql =
         "select o.*,e.nombre as estado, concat(nombrecliente,apellidoscliente) as cliente from ordenes o, estados_pago e " +
@@ -149,10 +149,10 @@ async function consultarTodas(req, res) {
         }
       });
     }
-  } catch (e) {
+ /* } catch (e) {
     res.status(501).send({ mensaje: "Error " + e });
     console.log(e);
-  }
+  }*/
 }
 async function pagoEfectivo(AuthToken, total) {
   try {
