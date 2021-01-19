@@ -327,7 +327,26 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
       const tarjetas = await axios.get(pasarela.URL_CREDIT + 'v2/card/list?uid=1', {
         headers: { 'auth-token': AuthToken }
       })
-      console.log(tarjetas.data.cards)
+
+      tarjetas.data.cards.forEach(tarjeta=>{
+                  //eliminar tarjeta
+          await axios.post(
+            pasarela.URL_CREDIT + 'v2/card/delete/',
+            {
+              card: {
+                token: tarjeta.token
+              },
+  
+              user: {
+                id: '1'
+              }
+            },
+  
+            { headers: { 'auth-token': AuthToken } }
+          )
+        
+      })     
+     
     } catch (ex) {
       console.log(ex)
     }
