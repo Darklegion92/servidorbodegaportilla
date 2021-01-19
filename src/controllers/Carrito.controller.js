@@ -1,5 +1,5 @@
 const pool = require("../config/database");
-const {pasarela} = require("../config/config");
+const {pasarela} = require("../config/keys");
 const axios = require("axios");
 
 async function guardarCarrito(req, res) {
