@@ -6,13 +6,13 @@ const {pasarela } = require("../config/keys")
 
 const bancospse = () =>
   new CronJob(
-    "* * * * *",
+    "59 23 * * *",
     async function () {
       const AuthToken = await crearToken();
 
       try {
         const json = await axios.get(
-          pasarela.URL+"banks/PSE/",
+          pasarela.URL+"https://noccapi-stg.globalpay.com.co/banks/PSE/",
           { headers: { "auth-token": AuthToken } }
         );
         if (json.status === 200) {
