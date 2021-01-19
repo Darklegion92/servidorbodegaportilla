@@ -327,7 +327,7 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
       const tarjetas = await axios.get(pasarela.URL_CREDIT + 'v2/card/list?uid=1', {
         headers: { 'auth-token': AuthToken }
       })
-      console.log(tarjetas)
+      console.log(tarjetas.data.cards)
     } catch (ex) {
       console.log(ex)
     }
