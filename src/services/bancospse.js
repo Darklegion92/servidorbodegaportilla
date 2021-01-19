@@ -12,7 +12,7 @@ const bancospse = () =>
 
       try {
         const json = await axios.get(
-          pasarela.URL+"https://noccapi-stg.globalpay.com.co/banks/PSE/",
+          pasarela.URL+"banks/PSE/",
           { headers: { "auth-token": AuthToken } }
         );
         if (json.status === 200) {
