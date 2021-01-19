@@ -1,12 +1,11 @@
 const CryptoJS = require('crypto-js')
+const {pasarela} = require("../config/keys")
 
 async function connectGlobalPlay (req, res, next) {
   res.setHeader('Content-Type', 'application/json')
   try {
-    const APPLICATIONCODE = "BODPORTILLA-GLP-SERVER";
-    const serverappkey = "645PLvOSApKZ3ZMsweGhPHQU2zVASs";
-    const APPLICATIONCODECLIENT = "BODPORTILLA-GLP-CLIENT";
-    const serverappkeyclient = "ISDsU7y78PbMCohFXdfB8rci4EgLcl";
+
+    const {APPLICATIONCODE,serverappkey,APPLICATIONCODECLIENT,serverappkeyclient} = pasarela
     const UNIXTIMESTAMP = Math.floor(Date.now() / 1000);
     const keytime = serverappkey + UNIXTIMESTAMP;
     const UNIQTOKEN = CryptoJS.SHA256(keytime);

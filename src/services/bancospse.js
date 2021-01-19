@@ -2,6 +2,7 @@ var CronJob = require("cron").CronJob;
 const axios = require("axios");
 const { crearToken } = require("../middlewares/globalPlay");
 const pool = require("../config/database");
+const {pasarela } = require("../config/keys")
 
 const bancospse = () =>
   new CronJob(
@@ -11,7 +12,7 @@ const bancospse = () =>
 
       try {
         const json = await axios.get(
-          "https://noccapi-stg.globalpay.com.co/banks/PSE/",
+          pasarela.URL+"banks/PSE/",
           { headers: { "auth-token": AuthToken } }
         );
         if (json.status === 200) {
