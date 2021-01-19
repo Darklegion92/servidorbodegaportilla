@@ -323,7 +323,7 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
       return 'Error al procesar la tarjeta'
     }
   } catch (e) {
-    console.log('entra estra mierda')
+    console.log(e)
     try {
       const tarjetas = await axios.get(pasarela.URL_CREDIT + 'v2/card/list?uid=1', {
         headers: { 'auth-token': AuthToken }
