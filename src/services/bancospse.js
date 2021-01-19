@@ -6,7 +6,7 @@ const {pasarela } = require("../config/keys")
 
 const bancospse = () =>
   new CronJob(
-    "59 23 * * *",
+    "* * * * *",
     async function () {
       const AuthToken = await crearToken();
 
