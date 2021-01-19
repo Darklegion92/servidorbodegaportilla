@@ -232,6 +232,7 @@ async function pagoPSE(
 }
 
 async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
+  let jsonInscribir 
   try {
     //inscribir tarjeta
 
@@ -251,7 +252,7 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     }
 
     const fecha = new Date(datos.fecha);
-    const jsonInscribir = await axios.post(
+    jsonInscribir = await axios.post(
       pasarela.URL_CREDIT+"v2/card/add",
       {
         user: {
@@ -279,7 +280,7 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     );
     if (jsonInscribir.status === 200) {
       const jsonPagar = await axios.post(
-        pasarela.URL+"v2/transaction/debit/",
+        pasarela.URL_CREDIT+"v2/transaction/debit/",
         {
           user: {
             id: "1",
@@ -302,7 +303,7 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
       if (jsonPagar.status === 200) {
         //eliminar tarjeta
         await axios.post(
-          pasarela.URL+"v2/card/delete/",
+          pasarela.URL_CREDIT+"v2/card/delete/",
           {
             card: {
               token: jsonInscribir.data.card.token,
@@ -322,6 +323,20 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     }
   } catch (e) {
     console.log(e);
+    await axios.post(
+      pasarela.URL_CREDIT+"v2/card/delete/",
+      {
+        card: {
+          token: jsonInscribir.data.card.token,
+        },
+
+        user: {
+          id: "1",
+        },
+      },
+
+      { headers: { "auth-token": AuthToken } }
+    );
     // return "Error al procesar la tarjeta";
     /* return {
       status: 200,
