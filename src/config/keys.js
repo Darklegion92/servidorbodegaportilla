@@ -6,6 +6,14 @@ module.exports ={
         database:'apirest',
     },
     pasarela:{
+        URL:"https://noccapi.globalpay.com.co/",
+        URL_CREDIT: "https://ccapi.globalpay.com.co/",
+        APPLICATIONCODE:"BPORTILLA-GLP-SERVER",
+        serverappkey : "PecYaTZAxeHKHl0MxKDUOTZu4TwQpd",
+        APPLICATIONCODECLIENT : "BPORTILLA-GLP-CLIENT",
+        serverappkeyclient: "CRVXdnNVLbUnTUVLJ6XwNasXMu4J1L",
+    },
+    pasarela_pruebas:{
         URL:"https://noccapi-stg.globalpay.com.co/",
         URL_CREDIT: "https://ccapi-stg.globalpay.com.co/",
         APPLICATIONCODE:"BODPORTILLA-GLP-SERVER",
