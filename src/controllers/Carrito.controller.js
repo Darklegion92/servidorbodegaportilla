@@ -267,7 +267,7 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
 
           holder_name: datos.nombre,
 
-          expiry_month: fecha.getMonth(),
+          expiry_month: fecha.getMonth()+1,
 
           expiry_year: fecha.getFullYear(),
 
