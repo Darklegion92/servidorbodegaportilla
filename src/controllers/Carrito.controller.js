@@ -232,7 +232,7 @@ async function pagoPSE(
 }
 
 async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
-  let jsonInscribir 
+  //let jsonInscribir 
   try {
     //inscribir tarjeta
 
@@ -252,7 +252,7 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     }
 
     const fecha = new Date(datos.fecha);
-    jsonInscribir = await axios.post(
+    const jsonInscribir = await axios.post(
       pasarela.URL_CREDIT+"v2/card/add",
       {
         user: {
@@ -323,47 +323,13 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     }
   } catch (e) {
     console.log(e);
-    await axios.post(
-      pasarela.URL_CREDIT+"v2/card/delete/",
-      {
-        card: {
-          token: jsonInscribir.data.card.token,
-        },
-
-        user: {
-          id: "1",
-        },
-      },
-
+    const tarjetas = await axios.get(
+      pasarela.URL_CREDIT+"v2/card/list/",
       { headers: { "auth-token": AuthToken } }
     );
-    // return "Error al procesar la tarjeta";
-    /* return {
-      status: 200,
-      data: {
-        transaction: {
-          status: "success",
-          payment_date: "2017-09-26T21:00:47",
-          amount: 11.1,
-          authorization_code: "088428",
-          installments: 1,
-          dev_reference: "referencia",
-          message: "Operation Successful",
-          carrier_code: "6",
-          id: "CI-489",
-          status_detail: 3,
-        },
-        card: {
-          bin: "450700",
-          expiry_year: "2020",
-          expiry_month: "9",
-          transaction_reference: "CI-489",
-          type: "vi",
-          number: "6651",
-          origin: "ORIGIN",
-        },
-      },
-    };*/
+    
+    console.log(tarjetas);
+
   }
 }
 
