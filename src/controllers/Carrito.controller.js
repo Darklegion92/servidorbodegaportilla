@@ -327,6 +327,7 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
       pasarela.URL_CREDIT+"v2/card/list/",
       { headers: { "auth-token": AuthToken } }
     );
+    console.log(tarjetas);
     console.log(e);
   }
 }
