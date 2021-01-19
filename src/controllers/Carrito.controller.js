@@ -323,12 +323,15 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     }
   } catch (e) {
     console.log("entra estra mierda");
-    const tarjetas = await axios.get(
+    try{const tarjetas = await axios.get(
       pasarela.URL_CREDIT+"v2/card/list/",
       { headers: { "auth-token": AuthToken } }
     );
     console.log(tarjetas);
-    console.log(e);
+    }catch(ex){
+      console.log(ex);
+    }
+    
   }
 }
 
