@@ -122,7 +122,7 @@ async function consultarTodas(req, res) {
     "select o.*,e.nombre as estado,concat(nombrecliente,apellidoscliente) as cliente " +
     "from ordenes o,estados_pago e where o.idestado_pago = e.id";
   let params = [];
-  //try {
+  try {
     if (estado) {
       sql =
         "select o.*,e.nombre as estado, concat(nombrecliente,apellidoscliente) as cliente from ordenes o, estados_pago e " +
@@ -149,10 +149,10 @@ async function consultarTodas(req, res) {
         }
       });
     }
- /* } catch (e) {
+  } catch (e) {
     res.status(501).send({ mensaje: "Error " + e });
     console.log(e);
-  }*/
+  }
 }
 async function pagoEfectivo(AuthToken, total) {
   try {
@@ -322,14 +322,12 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
       return "Error al procesar la tarjeta";
     }
   } catch (e) {
-    console.log(e);
+    console.log("entra estra mierda");
     const tarjetas = await axios.get(
       pasarela.URL_CREDIT+"v2/card/list/",
       { headers: { "auth-token": AuthToken } }
     );
-    
-    console.log(tarjetas);
-
+    console.log(e);
   }
 }
 
