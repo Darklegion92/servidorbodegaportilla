@@ -25,8 +25,7 @@ async function connectGlobalPlay (req, res, next) {
 
 async function crearToken () {
   try {
-    const APPLICATIONCODE = 'BODPORTILLA-GLP-SERVER'
-    const serverappkey = '645PLvOSApKZ3ZMsweGhPHQU2zVASs'
+    const {APPLICATIONCODE,serverappkey} = pasarela
     const UNIXTIMESTAMP = Math.floor(new Date().getTime() / 1000)
     const keytime = serverappkey + UNIXTIMESTAMP
     const UNIQTOKEN = CryptoJS.SHA256(keytime)

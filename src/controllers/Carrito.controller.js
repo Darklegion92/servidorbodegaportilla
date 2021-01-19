@@ -1,4 +1,5 @@
 const pool = require("../config/database");
+const {pasarela} = require("../config/config");
 const axios = require("axios");
 
 async function guardarCarrito(req, res) {
@@ -156,7 +157,7 @@ async function consultarTodas(req, res) {
 async function pagoEfectivo(AuthToken, total) {
   try {
     const resp = await axios.post(
-      "https://noccapi-stg.globalpay.com.co/order/",
+      pasarela.URL+"order/",
       {
         carrier: {
           id: "payvalida",
@@ -193,7 +194,7 @@ async function pagoPSE(
 ) {
   try {
     const resp = await axios.post(
-      "https://noccapi-stg.globalpay.com.co/order/",
+      pasarela.URL+"order/",
       {
         carrier: {
           id: "PSE",
@@ -247,7 +248,7 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     }
     const fecha = new Date(datos.fecha);
     const jsonInscribir = await axios.post(
-      "https://ccapi-stg.globalpay.com.co/v2/card/add",
+      pasarela.URL+"v2/card/add",
       {
         user: {
           id: "1",
@@ -274,7 +275,7 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     );
     if (jsonInscribir.status === 200) {
       const jsonPagar = await axios.post(
-        "https://ccapi-stg.globalpay.com.co/v2/transaction/debit/",
+        pasarela.URL+"v2/transaction/debit/",
         {
           user: {
             id: "1",
@@ -297,7 +298,7 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
       if (jsonPagar.status === 200) {
         //eliminar tarjeta
         await axios.post(
-          "https://ccapi-stg.globalpay.com.co/v2/card/delete/",
+          pasarela.URL+"v2/card/delete/",
           {
             card: {
               token: jsonInscribir.data.card.token,
@@ -463,7 +464,7 @@ async function consultar(req, res) {
       let estado = "PENDIENTE";
       if (orden.idestado_pago !== 1) {
         const json = await axios.get(
-          "https://noccapi-stg.globalpay.com.co/pse/order/" +
+          pasarela.URL+"pse/order/" +
             orden[0].numeropago,
           { headers: { "auth-token": AuthToken } }
         );
