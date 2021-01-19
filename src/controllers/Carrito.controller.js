@@ -236,6 +236,9 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     //inscribir tarjeta
 
     //averiguar tarjeta
+    console.log(datos.numero);
+    console.log(datos.numero.substr(0, 1));
+
     let tipo;
     if (datos.numero.substr(0, 1) === 3) {
       tipo = "ax";
@@ -246,6 +249,9 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     } else if (datos.numero.substr(0, 1) === 6) {
       tipo = "dc";
     }
+
+    console.log(tipo);
+
     const fecha = new Date(datos.fecha);
     const jsonInscribir = await axios.post(
       pasarela.URL+"v2/card/add",
