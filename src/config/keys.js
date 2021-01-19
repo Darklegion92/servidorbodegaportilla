@@ -11,8 +11,8 @@ module.exports ={
             APPLICATIONCODE:"BODPORTILLA-GLP-SERVER",
             serverappkey : "645PLvOSApKZ3ZMsweGhPHQU2zVASs",
             APPLICATIONCODECLIENT : "BODPORTILLA-GLP-CLIENT",
-            serverappkeyclient: "ISDsU7y78PbMCohFXdfB8rci4EgLcl"
-
+            serverappkeyclient: "ISDsU7y78PbMCohFXdfB8rci4EgLcl",
+            ser:""
     },
     SECRET_TOKEN:"SOLTEC"
 }
