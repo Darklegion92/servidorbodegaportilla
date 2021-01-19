@@ -246,6 +246,8 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
       tipo = "mc";
     } else if (datos.numero.substr(0, 1) == 6) {
       tipo = "dc";
+    }else{
+      res.status(403).send({mensaje:"medio de pago no soprtado"})
     }
 
     const fecha = new Date(datos.fecha);
