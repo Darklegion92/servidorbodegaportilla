@@ -280,6 +280,8 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
       { headers: { 'auth-token': AuthTokenClient } }
     )
     if (jsonInscribir.status === 200) {
+
+      console.log(jsonInscribir.data);
       const jsonPagar = await axios.post(
         pasarela.URL_CREDIT + 'v2/transaction/debit/',
         {
