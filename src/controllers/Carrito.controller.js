@@ -240,13 +240,13 @@ async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
     console.log(datos.numero.substr(0, 1));
 
     let tipo;
-    if (datos.numero.substr(0, 1) === 3) {
+    if (datos.numero.substr(0, 1) == 3) {
       tipo = "ax";
-    } else if (datos.numero.substr(0, 1) === 4) {
+    } else if (datos.numero.substr(0, 1) == 4) {
       tipo = "vi";
-    } else if (datos.numero.substr(0, 1) === 5) {
+    } else if (datos.numero.substr(0, 1) == 5) {
       tipo = "mc";
-    } else if (datos.numero.substr(0, 1) === 6) {
+    } else if (datos.numero.substr(0, 1) == 6) {
       tipo = "dc";
     }
 
