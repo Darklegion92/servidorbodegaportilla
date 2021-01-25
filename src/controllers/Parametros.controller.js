@@ -74,6 +74,7 @@ async function consultargrupos(req, res) {
       console.log("tamaño de datos"+datos.length);
       let data = []
       datos.forEach(async (grupo,i)=>{
+        console.log("consulta "+i);
         const subgrupos = await pool.query("SELECT * FROM subgrupos where idgrupo = "+grupo.id+" order by nombre");
 
         grupo.subgrupos = subgrupos;
