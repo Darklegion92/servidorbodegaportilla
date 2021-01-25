@@ -62,5 +62,3 @@ app.listen(app.get('port'), () => {
   console.log('Servidor Corriendo en el puerto ' + app.get('port'))
 })
 
-
-//module.exports = app

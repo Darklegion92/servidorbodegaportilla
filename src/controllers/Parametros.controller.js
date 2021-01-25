@@ -70,7 +70,21 @@ async function consultargrupos(req, res) {
     const datos = await pool.query("SELECT * FROM grupos");
 
     if (datos.length > 0) {
-      res.status(200).send(datos);
+      let data = []
+      datos.forEach(async (grupo,i)=>{
+        const subgrupos = await pool.query("SELECT * FROM subgrupos where idgrupo = "+grupo.id);
+
+        grupo.subgrupos = subgrupos;
+
+        data.push(grupo)
+        if(i>=datos.length-1){
+          console.log(data);
+          res.status(200).send(data);
+        }
+        
+      })
+
+  
     } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
   } catch (e) {
     res.status(501).send({ mensaje: "Error " + e });

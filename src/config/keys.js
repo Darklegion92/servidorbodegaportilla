@@ -13,7 +13,7 @@ module.exports ={
         APPLICATIONCODECLIENT : "BPORTILLA-GLP-CLIENT",
         serverappkeyclient: "CRVXdnNVLbUnTUVLJ6XwNasXMu4J1L",
     },
-    pasarela_prueba:{
+    pasarela_dev:{
         URL:"https://noccapi-stg.globalpay.com.co/",
         URL_CREDIT: "https://ccapi-stg.globalpay.com.co/",
         APPLICATIONCODE:"BODPORTILLA-GLP-SERVER",
@@ -21,5 +21,5 @@ module.exports ={
         APPLICATIONCODECLIENT : "BODPORTILLA-GLP-CLIENT",
         serverappkeyclient: "ISDsU7y78PbMCohFXdfB8rci4EgLcl",
     },
-    SECRET_TOKEN:"SOLTEC"
+    SECRET_TOKEN:"SOLTEC-BODEGA25684@*.1S221%-"
 }

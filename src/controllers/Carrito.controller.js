@@ -261,7 +261,6 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
 
           email: 'ssierra.ext@rbm.com.co'
         },
-
         card: {
           number: datos.numero,
 
