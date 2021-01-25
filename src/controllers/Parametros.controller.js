@@ -80,7 +80,7 @@ async function consultargrupos(req, res) {
         grupo.subgrupos = subgrupos;
 
         data.push(grupo)
-        if(i>=datos.length-1){
+        if(data.length===datos.length){
           console.log(data);
           res.status(200).send(data);
         }
