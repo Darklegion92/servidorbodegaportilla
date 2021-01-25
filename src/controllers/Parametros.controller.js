@@ -67,12 +67,13 @@ async function consultargrupos(req, res) {
   res.setHeader("Content-Type", "application/json");
 
   try {
-    const datos = await pool.query("SELECT * FROM grupos");
+    const datos = await pool.query("SELECT * FROM grupos order by nombre");
 
     if (datos.length > 0) {
+      console.log(datos);
       let data = []
       datos.forEach(async (grupo,i)=>{
-        const subgrupos = await pool.query("SELECT * FROM subgrupos where idgrupo = "+grupo.id);
+        const subgrupos = await pool.query("SELECT * FROM subgrupos where idgrupo = "+grupo.id+" order by nombre");
 
         grupo.subgrupos = subgrupos;
 
