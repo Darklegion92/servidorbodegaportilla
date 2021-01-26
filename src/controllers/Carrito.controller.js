@@ -118,29 +118,42 @@ async function consultarTodas (req, res) {
   res.setHeader('Content-Type', 'application/json')
 
   const { estado, fechas } = req.query
+  const date = fechas && JSON.parse(fechas)
+ 
   let sql =
-    'select o.*,e.nombre as estado,concat(nombrecliente,apellidoscliente) as cliente ' +
-    'from ordenes o,estados_pago e where o.idestado_pago = e.id'
+    'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
+    'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 order by id desc'
   let params = []
   try {
-    if (estado) {
+    if (estado && date && date.date!=null) {
       sql =
-        'select o.*,e.nombre as estado, concat(nombrecliente,apellidoscliente) as cliente from ordenes o, estados_pago e ' +
-        'where o.idestado_pago = ? and o.idestado_pago = e.id'
+        'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
+        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and o.idestado = ? and fecha>=? and fecha<=?'+
+        ' order by id desc'
+      params = [estado,date.dateString[0],date.dateString[1]]
+    }else if (estado) {
+      sql =
+        'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
+        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and o.idestado = ?'+
+        ' order by id desc'
       params = [estado]
+    }else if (date && date.date!=null) {
+      sql =
+        'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
+        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and fecha>=? and fecha<=?'+
+        ' order by id desc'
+      params = [date.dateString[0],date.dateString[1]]
     }
 
     const resp = await pool.query(sql, params)
-
     if (resp.length > 0) {
       let ordenes = resp
       await resp.forEach(async (orden, i) => {
         const orden_detalle = await pool.query(
-          'select* from orden_detalles where idorden = ?',
+          'select * from orden_detalles where idorden = ?',
           [orden.id]
         )
         if (orden_detalle.length > 0) {
-          console.log(orden_detalle)
           ordenes[i].detalles = orden_detalle
         }
 
@@ -148,6 +161,8 @@ async function consultarTodas (req, res) {
           res.status(200).send(ordenes)
         }
       })
+    }else{
+      res.status(201).send({message:"sin datos"})
     }
   } catch (e) {
     res.status(501).send({ mensaje: 'Error ' + e })
@@ -266,7 +281,7 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
 
           holder_name: datos.nombre,
 
-          expiry_month: fecha.getMonth()+1,
+          expiry_month: fecha.getMonth() + 1,
 
           expiry_year: fecha.getFullYear(),
 
@@ -279,8 +294,6 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
       { headers: { 'auth-token': AuthTokenClient } }
     )
     if (jsonInscribir.status === 200) {
-
-      console.log(jsonInscribir.data);
       const jsonPagar = await axios.post(
         pasarela.URL_CREDIT + 'v2/transaction/debit/',
         {
@@ -326,29 +339,30 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
   } catch (e) {
     console.log(e)
     try {
-      const tarjetas = await axios.get(pasarela.URL_CREDIT + 'v2/card/list?uid=1', {
-        headers: { 'auth-token': AuthToken }
-      })
+      const tarjetas = await axios.get(
+        pasarela.URL_CREDIT + 'v2/card/list?uid=1',
+        {
+          headers: { 'auth-token': AuthToken }
+        }
+      )
 
-      tarjetas.data.cards.forEach(async tarjeta=>{
-                  //eliminar tarjeta
-          await axios.post(
-            pasarela.URL_CREDIT + 'v2/card/delete/',
-            {
-              card: {
-                token: tarjeta.token
-              },
-  
-              user: {
-                id: '1'
-              }
+      tarjetas.data.cards.forEach(async tarjeta => {
+        //eliminar tarjeta
+        await axios.post(
+          pasarela.URL_CREDIT + 'v2/card/delete/',
+          {
+            card: {
+              token: tarjeta.token
             },
-  
-            { headers: { 'auth-token': AuthToken } }
-          )
-        
-      })     
-     
+
+            user: {
+              id: '1'
+            }
+          },
+
+          { headers: { 'auth-token': AuthToken } }
+        )
+      })
     } catch (ex) {
       console.log(ex)
     }
@@ -510,6 +524,25 @@ async function consultar (req, res) {
   }
 }
 
+async function actualizarEstado (req, res) {
+  res.setHeader('Content-Type', 'application/json')
+  const { idorden,state } = req.body
+  try {
+    const orden = await pool.query('UPDATE ordenes set idestado=? where id=?', [
+      state,idorden
+    ])
+   
+    if (orden.affectedRows > 0) {
+      res.status(200).send({messaje:"actualizado correcto"})
+    }else{
+      res.status(201).send({messaje:"orden no encontrada"})
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(500).send({ mensaje: e })
+  }
+}
+
 function error (req, res) {
   res.setHeader('Content-Type', 'application/json')
   res.status(404).send({ mensaje: 'Página no encontrada' })
@@ -521,6 +554,7 @@ module.exports = {
   editarItem,
   consultar,
   guardarCarrito,
+  actualizarEstado,
   consultarTodas,
   error
 }

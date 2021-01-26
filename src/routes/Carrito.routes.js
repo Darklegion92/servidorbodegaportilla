@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const Auth = require("../middlewares/acceso");
+const {isAuth} = require("../middlewares/acceso");
 const { connectGlobalPlay } = require("../middlewares/globalPlay");
 const CarritoCtrl = require("../controllers/Carrito.controller");
 
@@ -7,9 +7,10 @@ router = Router();
 router
   .get("/consultar/:idorden", connectGlobalPlay, CarritoCtrl.consultar)
   .get("/consultar", connectGlobalPlay, CarritoCtrl.consultarTodas)
-  .put("/item", Auth.isAuth, CarritoCtrl.agregarItem)
-  .post("/item/delete", Auth.isAuth, CarritoCtrl.eliminarItem)
-  .post("/item/update", Auth.isAuth, CarritoCtrl.editarItem)
+  .put("/item", isAuth, CarritoCtrl.agregarItem)
+  .put("/actualizarestado", isAuth, CarritoCtrl.actualizarEstado)
+  .post("/item/delete", isAuth, CarritoCtrl.eliminarItem)
+  .post("/item/update", isAuth, CarritoCtrl.editarItem)
   .put("/guardar", connectGlobalPlay, CarritoCtrl.guardarCarrito)
   .get("/*", CarritoCtrl.error);
 

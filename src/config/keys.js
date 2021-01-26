@@ -5,7 +5,7 @@ module.exports ={
         password:'1234',
         database:'apirest',
     },
-    pasarela:{
+    pasarela_prod:{
         URL:"https://noccapi.globalpay.com.co/",
         URL_CREDIT: "https://ccapi.globalpay.com.co/",
         APPLICATIONCODE:"BPORTILLA-GLP-SERVER",
@@ -13,7 +13,7 @@ module.exports ={
         APPLICATIONCODECLIENT : "BPORTILLA-GLP-CLIENT",
         serverappkeyclient: "CRVXdnNVLbUnTUVLJ6XwNasXMu4J1L",
     },
-    pasarela_dev:{
+    pasarela:{
         URL:"https://noccapi-stg.globalpay.com.co/",
         URL_CREDIT: "https://ccapi-stg.globalpay.com.co/",
         APPLICATIONCODE:"BODPORTILLA-GLP-SERVER",

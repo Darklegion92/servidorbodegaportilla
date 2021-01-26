@@ -11,6 +11,7 @@ router
   .get("/recomendaciones", ParametrosCtrl.consultarrecomendaciones)
   .get("/grupos", ParametrosCtrl.consultargrupos)
   .get("/marcas", ParametrosCtrl.consultarmarcas)
+  .get("/estados", ParametrosCtrl.consultarEstados)
   .get("/subgrupos/:idgrupo", ParametrosCtrl.consultarsubgrupos)
   .delete("/carusel/:id", Auth.isAuth, ParametrosCtrl.eliminarcarusel)
   .post("/subirimg", Auth.isAuth, ParametrosCtrl.subirimg)
