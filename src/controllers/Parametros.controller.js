@@ -326,7 +326,7 @@ async function editarrecomendacion(req, res) {
 
     if (img && img !== null) {
       fsE.move(
-        "src/public/temp/" + img,
+        img,
         "src/public/img/secciones/" + img,
         (err) => {
           if (err){ 
