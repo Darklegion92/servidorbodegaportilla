@@ -188,7 +188,7 @@ async function consultarBancosPSE(req, res) {
 
 async function subirimg(req, res) {
   console.log(req);
-  console.log(req.body.path);
+  console.log(req.body);
   const img = req.body.path.split("/");
   res.status(200).send({ img: img[img.length - 1] });
 }
