@@ -325,13 +325,14 @@ async function editarrecomendacion(req, res) {
     await pool.query(sql, params);
 
     if (img && img !== null) {
-      console.log(img);
       fsE.move(
         "src/public/temp/" + img,
         "src/public/img/secciones/" + img,
         (err) => {
-          if (err) res.status(502).send({ error: err });
-          else {
+          if (err){ 
+            console.log(err);
+            res.status(502).send({ error: err });
+        }else {
             res.status(200).send({ mensaje: "ok" });
             fs.unlink("src/public/" + imgant);
           }
