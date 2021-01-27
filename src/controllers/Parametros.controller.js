@@ -188,6 +188,8 @@ async function consultarBancosPSE(req, res) {
 
 async function subirimg(req, res) {
   const img = req.body.img.path.split("\\");
+console.log(img);
+
   res.status(200).send({ img: img[img.length - 1] });
 }
 
@@ -296,7 +298,7 @@ async function editarrecomendacion(req, res) {
   const { titulo, texto } = data;
   try {
     let img1 = "img/secciones/" + img;
-    console.log(req.body);
+   
     let sql = "UPDATE recomendaciones set img=?, titulo=?, texto=? where id=? ";
     let params = [img1, titulo, texto, id];
 
