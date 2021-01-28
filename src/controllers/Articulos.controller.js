@@ -6,7 +6,7 @@ async function consultarCategoria(req, res) {
   res.setHeader("Content-Type", "application/json");
   try {
     let sql =
-      "select * from articulos where categoria !='NORMAL' ORDER BY articulos.rank";
+      "select * from articulos where categoria !='NORMAL' and estado=1 ORDER BY articulos.rank";
 
     const datos = await pool.query(sql);
 
@@ -32,31 +32,31 @@ async function consultar(req, res) {
     name = nombre;
   }
   try {
-    let sql = "select * from articulos where nombre LIKE ? ORDER BY " + order;
+    let sql = "select * from articulos where nombre LIKE ? and estado=1 ORDER BY " + order;
     let params = ["%" + name + "%", order];
     if (idgrupo && idsubgrupo && idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? and idmarca=? ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? and idmarca=? and estado=1 ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idsubgrupo, idmarca];
     } else if (idgrupo && idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=?and idmarca=? ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idgrupo=?and idmarca=? and estado=1 ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idmarca];
     } else if (idgrupo && idsubgrupo) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? and estado=1 ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idsubgrupo];
     } else if (idgrupo) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idgrupo=? and estado=1 ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo];
     } else if (idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idmarca=? ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idmarca=? and estado=1 ORDER BY " +
         order;
       params = ["%" + name + "%", idmarca];
     }
@@ -101,13 +101,15 @@ async function editar(req, res) {
 
   if (articulo.embalaje === "Gr") {
     articulo.precio = articulo.precio / 1000;
+    articulo.cant_dcto1 = articulo.cant_dcto1 / 1000;
+    articulo.cant_dcto2 = articulo.cant_dcto2 / 1000;
+    articulo.cant_dcto3 = articulo.cant_dcto3 / 1000;
   }
   try {
     const datos = await pool.query("UPDATE articulos SET ? WHERE codigo=?", [
       articulo,
       articulo.codigo,
     ]);
-    console.log(datos);
     if (datos.affectedRows > 0) {
       if (img && img !== null) {
         fsE.move(
@@ -140,6 +142,9 @@ async function crear(req, res) {
 
   if (articulo.embalaje === "Gr") {
     articulo.precio = articulo.precio / 1000;
+    articulo.cant_dcto1 = articulo.cant_dcto1 / 1000;
+    articulo.cant_dcto2 = articulo.cant_dcto2 / 1000;
+    articulo.cant_dcto3 = articulo.cant_dcto3 / 1000;
   }
   try {
     const datos = await pool.query(
