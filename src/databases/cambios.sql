@@ -37,4 +37,4 @@ ADD COLUMN `fecha` DATE NOT NULL AFTER `idestado`;
 
 ALTER TABLE `apirest`.`articulos` 
 ADD COLUMN `estado` TINYINT(1) NOT NULL DEFAULT 1 AFTER `incremento`,
-CHANGE COLUMN `img` `img` VARCHAR(150) NOT NULL DEFAULT 'img/ninguna.png' ;
+CHANGE COLUMN `img` `img` VARCHAR(150) NULL DEFAULT 'img/ninguna.png' ;

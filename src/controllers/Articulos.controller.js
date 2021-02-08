@@ -6,7 +6,7 @@ async function consultarCategoria(req, res) {
   res.setHeader("Content-Type", "application/json");
   try {
     let sql =
-      "select * from articulos where categoria !='NORMAL' and estado=1 ORDER BY articulos.rank";
+      "select * from articulos where categoria !='NORMAL' and estado=1 ORDER BY articulos.rank desc";
 
     const datos = await pool.query(sql);
 
@@ -22,11 +22,10 @@ async function consultarCategoria(req, res) {
 async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { idgrupo, idsubgrupo, idmarca, orden, nombre } = req.query;
-  let order = "'articulos.rank'";
+  let order = "articulos.rank desc";
   let name = "";
-  console.log(orden);
   if (orden) {
-    order = "articulos." + orden + ",articulos.rank";
+    order = "articulos." + orden + ",articulos.rank desc";
   }
   if (nombre) {
     name = nombre;
@@ -61,7 +60,6 @@ async function consultar(req, res) {
       params = ["%" + name + "%", idmarca];
     }
     const datos = await pool.query(sql, params);
-    // console.log(datos);
     if (datos.length > 0) {
       res.status(200).send(datos);
     } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
@@ -74,9 +72,8 @@ async function consultar(req, res) {
 async function consultarCodigo(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { codigo } = req.query;
-  console.log(codigo);
   try {
-    const datos = await pool.query("select * from articulos where codigo = ?", [
+    const datos = await pool.query("select * from articulos where codigo = ? order by articulos.rank desc", [
       codigo,
     ]);
     if (datos.length > 0) {
