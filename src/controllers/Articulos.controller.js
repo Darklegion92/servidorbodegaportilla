@@ -191,6 +191,23 @@ async function crear(req, res) {
   }
 }
 
+async function eliminarArticulo(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const datos = await pool.query("DELETE FROM articulos WHERE id=?", [
+     id
+    ]);
+    if (datos.affectedRows > 0) {
+      res.status(200).send({ mensaje: "Eliminado Correctamente" });
+       
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+  }
+}
+
 function error(req, res) {
   res.setHeader("Content-Type", "application/json");
   res.status(404).send({ mensaje: "Página no encontrada" });
@@ -202,5 +219,6 @@ module.exports = {
   editar,
   crear,
   consultarCodigo,
+  eliminarArticulo,
   error,
 };
