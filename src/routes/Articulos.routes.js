@@ -6,7 +6,7 @@ router = Router()
 router
   .get('/', ArticulosCtrl.consultar)
   .get('/categoria', ArticulosCtrl.consultarCategoria)
-  .delete('/:id', ArticulosCtrl.eliminarArticulo)
+  .delete('/:id',isAuth, ArticulosCtrl.eliminarArticulo)
   .get('/consultar', ArticulosCtrl.consultarCodigo)
   .put('/editar', isAuth, ArticulosCtrl.editar)
   .post('/crear', isAuth, ArticulosCtrl.crear)
