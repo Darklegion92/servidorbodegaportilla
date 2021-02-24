@@ -21,7 +21,7 @@ async function consultarCategoria(req, res) {
 
 async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { idgrupo, idsubgrupo, idmarca, orden, nombre,isCar} = req.query;
+  const { idgrupo, idsubgrupo, idmarca, orden, nombre,iscar} = req.query;
 
   let order = "articulos.rank desc,articulos.nombre asc";
   let name = "";
