@@ -21,7 +21,8 @@ async function consultarCategoria(req, res) {
 
 async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { idgrupo, idsubgrupo, idmarca, orden, nombre } = req.query;
+  const { idgrupo, idsubgrupo, idmarca, orden, nombre,isCar} = req.query;
+
   let order = "articulos.rank desc,articulos.nombre asc";
   let name = "";
   if (orden) {
@@ -31,31 +32,31 @@ async function consultar(req, res) {
     name = nombre;
   }
   try {
-    let sql = "select * from articulos where nombre LIKE ? and estado=1 ORDER BY " + order;
+    let sql = "select * from articulos where nombre LIKE ? and "+(iscar?"estado=1":"")+" ORDER BY " + order;
     let params = ["%" + name + "%", order];
     if (idgrupo && idsubgrupo && idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? and idmarca=? and estado=1 ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? and idmarca=? and "+(iscar?"estado=1":"")+" ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idsubgrupo, idmarca];
     } else if (idgrupo && idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=?and idmarca=? and estado=1 ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idgrupo=?and idmarca=? and "+(iscar?"estado=1":"")+" ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idmarca];
     } else if (idgrupo && idsubgrupo) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? and estado=1 ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? and "+(iscar?"estado=1":"")+" ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idsubgrupo];
     } else if (idgrupo) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? and estado=1 ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idgrupo=? and "+(iscar?"estado=1":"")+" ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo];
     } else if (idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idmarca=? and estado=1 ORDER BY " +
+        "select * from articulos where nombre LIKE ? AND idmarca=? and "+(iscar?"estado=1":"")+" ORDER BY " +
         order;
       params = ["%" + name + "%", idmarca];
     }
