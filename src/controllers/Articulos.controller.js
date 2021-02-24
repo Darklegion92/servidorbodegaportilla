@@ -99,9 +99,9 @@ async function editar(req, res) {
 
   if (articulo.embalaje === "Gr") {
     articulo.precio = articulo.precio / 1000;
-    articulo.cant_dcto1 = articulo.cant_dcto1 / 1000;
-    articulo.cant_dcto2 = articulo.cant_dcto2 / 1000;
-    articulo.cant_dcto3 = articulo.cant_dcto3 / 1000;
+    articulo.dcto1 = articulo.cant_dcto1 / 1000;
+    articulo.dcto2 = articulo.cant_dcto2 / 1000;
+    articulo.dcto3 = articulo.cant_dcto3 / 1000;
   }
   try {
     const datos = await pool.query("UPDATE articulos SET ? WHERE codigo=?", [
