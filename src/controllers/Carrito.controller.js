@@ -73,6 +73,10 @@ async function guardarCarrito (req, res) {
           'UPDATE ordenes set finalizada=1, idtipo_pago=4,numeropago=?,fecha=CURDATE() where id=?',
           [resp.data.transaction.id, idorden]
         )
+        await pool.query(
+          'UPDATE clientes set idorden=null where id=?',
+          [user.id]
+        )
         res.status(200).send({ url: resp.data.transaction.bank_url })
       } else {
         res.status(201).send({ mensaje: 'Error' })
