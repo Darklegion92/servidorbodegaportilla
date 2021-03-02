@@ -10,6 +10,7 @@ router
   .post("/logingoogle", ClientesCtrl.loginGoogle)
   .post("/register", ClientesCtrl.registro)
   .get("/validar", Auth.isAuth, ClientesCtrl.validarToken)
+  .put("/actualizar", Auth.isAuth, ClientesCtrl.actualizar)
   .get("/*", ClientesCtrl.error);
 
 module.exports = router;
