@@ -142,12 +142,13 @@ async function actualizar (req, res) {
     otrocelular,
     direccion,
     tipodocumento,
+    documento,
     idusuario
   } = req.body
 
   try {
     const resp = await pool.query(
-      'UPDATE clientes SET nombres=?,apellidos=?,celular=?,celular2=?,direccion=?,idtipo_documento=? WHERE id=?',
+      'UPDATE clientes SET nombres=?,apellidos=?,celular=?,celular2=?,direccion=?,idtipo_documento=?,documento=? WHERE id=?',
       [
         nombres,
         apellidos,
@@ -155,6 +156,7 @@ async function actualizar (req, res) {
         otrocelular,
         direccion,
         tipodocumento,
+        documento,
         idusuario
       ]
     )
