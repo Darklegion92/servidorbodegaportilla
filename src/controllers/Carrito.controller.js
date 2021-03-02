@@ -13,7 +13,7 @@ async function guardarCarrito (req, res) {
       idorden = user.idorden
     } else {
       const resp = await pool.query(
-        'INSERT INTO ordenes(nombrecliente,apellidoscliente,telefonocliente,telefono2cliente,idtipo_documento,documentocliente,direccioncliente,idtipo_pago,idestado_pago)VALUE (?, ?, ?, ?, ?, ?, ?,?,?)',
+        'INSERT INTO ordenes(nombrecliente,apellidoscliente,telefonocliente,telefono2cliente,idtipo_documento,documentocliente,direccioncliente,idtipo_pago,idestado_pago,fecha)VALUE (?, ?, ?, ?, ?, ?, ?,?,?,CURDATE())',
         [
           datosOrden.nombres,
           datosOrden.apellidos,
@@ -70,7 +70,7 @@ async function guardarCarrito (req, res) {
       )
       if (resp.status === 200) {
         await pool.query(
-          'UPDATE ordenes set finalizada=1, idtipo_pago=4,numeropago=? where id=?',
+          'UPDATE ordenes set finalizada=1, idtipo_pago=4,numeropago=?,fecha=CURDATE() where id=?',
           [resp.data.transaction.id, idorden]
         )
         res.status(200).send({ url: resp.data.transaction.bank_url })
@@ -82,7 +82,7 @@ async function guardarCarrito (req, res) {
       //console.log(resp);
       if (resp.status === 200)
         await pool.query(
-          'UPDATE ordenes set finalizada=1, idtipo_pago=2,numeropago=? where id=?',
+          'UPDATE ordenes set finalizada=1, idtipo_pago=2,numeropago=?,fecha=CURDATE() where id=?',
           [resp.data.transaction.id, idorden]
         )
       res.status(200).send({
@@ -94,7 +94,7 @@ async function guardarCarrito (req, res) {
       resp = await pagoCredito(AuthToken, AuthTokenClient, datosPago, total)
       if (resp.status === 200) {
         await pool.query(
-          'UPDATE ordenes set finalizada=1, idtipo_pago=3,numeropago=? where id=?',
+          'UPDATE ordenes set finalizada=1, idtipo_pago=3,numeropago=?,fecha=CURDATE() where id=?',
           [resp.data.transaction.id, idorden]
         )
         res.status(200).send({
@@ -169,6 +169,7 @@ async function consultarTodas (req, res) {
     console.log(e)
   }
 }
+
 async function pagoEfectivo (AuthToken, total) {
   try {
     const resp = await axios.post(
