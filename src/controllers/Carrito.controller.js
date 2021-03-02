@@ -89,6 +89,10 @@ async function guardarCarrito (req, res) {
           'UPDATE ordenes set finalizada=1, idtipo_pago=2,numeropago=?,fecha=CURDATE() where id=?',
           [resp.data.transaction.id, idorden]
         )
+        await pool.query(
+          'UPDATE clientes set idorden=null where id=?',
+          [user.id]
+        )
       res.status(200).send({
         url: '/pagoefectivo',
         datos: resp.data,
@@ -100,6 +104,10 @@ async function guardarCarrito (req, res) {
         await pool.query(
           'UPDATE ordenes set finalizada=1, idtipo_pago=3,numeropago=?,fecha=CURDATE() where id=?',
           [resp.data.transaction.id, idorden]
+        )
+        await pool.query(
+          'UPDATE clientes set idorden=null where id=?',
+          [user.id]
         )
         res.status(200).send({
           url: '/pagocredito',
