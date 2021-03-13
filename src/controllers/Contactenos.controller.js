@@ -16,7 +16,7 @@ function enviarContacto (req, res) {
     }
   }
 
-  var email = {
+  var email2 = {
     from: 'contactos.portilla@gmail.com',
     to: 'onlin1992@gmail.com',
     subject: 'Contacto usuario nuevo',
@@ -34,7 +34,7 @@ function enviarContacto (req, res) {
 
   let createTransport = nodemailer.createTransport(jConfig);
 
-  createTransport.sendMail(email, function (error, info) { 
+  createTransport.sendMail(email2, function (error, info) { 
     if(error){ 
          console.log("Error al enviar email"); 
       res.status(501).send({ mensaje: error });
