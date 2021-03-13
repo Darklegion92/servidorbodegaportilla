@@ -14,7 +14,7 @@ function enviarContacto(req, res) {
   });
 
   var mailOptions = {
-    from: "envio.contactosportilla@gmail.com",
+    from: "contactos.portilla@gmail.com",
     to: "onlin1992@gmail.com",
     subject: "Contacto usuario nuevo",
     text:
