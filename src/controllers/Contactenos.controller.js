@@ -9,7 +9,7 @@ function enviarContacto (req, res) {
     service: "gmail", //al usar un servicio bien conocido, no es necesario proveer un nombre de servidor.
     auth: {
       user: "contactos.portilla@gmail.com",
-      pass: "B123456789p.",
+      pass: "hwsyqudoyitrewxu",
     },
   }
 
