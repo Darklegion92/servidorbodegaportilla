@@ -8,7 +8,7 @@ function enviarContacto (req, res) {
   let jConfig = {
     host: 'smtp.gmail.com',
     port: '587',
-    secure: true,
+    secure: false,
     auth: {
       type: 'login',
       user: 'contactos.portilla@gmail.com',
