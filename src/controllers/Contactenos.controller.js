@@ -16,7 +16,7 @@ function enviarContacto (req, res) {
     }
   }
 
-  var jConfig = {
+  var email = {
     from: 'contactos.portilla@gmail.com',
     to: 'onlin1992@gmail.com',
     subject: 'Contacto usuario nuevo',
