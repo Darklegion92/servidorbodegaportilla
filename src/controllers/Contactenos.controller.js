@@ -15,17 +15,25 @@ function enviarContacto (req, res) {
 
   var email2 = {
     from: 'contactos.portilla@gmail.com',
-    to: 'onlin1992@gmail.com',
+    to: 'ventaenlinea@bodegaportilla.com',
     subject: 'Contacto usuario nuevo',
-    html: 
-      "<div>"+
-        "<p>{'Email: ' + email}</p>"+
-        "<p>{'Nombre: ' + nombre}</p>"+
-        "<p>{'Teléfono: ' + telefono}</p>"+
-        "<p>{'Aceptó recibir Comunicaciones:' + comunicaciones}</p>"+
-        "<p>{'Aceptó políticas, Termínos y Condiciones: true'}</p>"+
-        "<p>{'Mensaje: ' + mensaje}</p>"+
-      "</div>"
+    text:
+    "Email: " +
+    email +
+    "\n" +
+    "Nombre: " +
+    nombre +
+    "\n" +
+    "Teléfono: " +
+    telefono +
+    "\n" +
+    "Aceptó recibir Comunicaciones:" +
+    comunicaciones +
+    "\n" +
+    "Aceptó políticas, Termínos y Condiciones: true" +
+    "\n" +
+    "Mensaje: " +
+    mensaje,
   }
 
   let createTransport = nodemailer.createTransport(jConfig);
