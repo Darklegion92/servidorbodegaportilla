@@ -20,16 +20,15 @@ function enviarContacto (req, res) {
     from: 'contactos.portilla@gmail.com',
     to: 'onlin1992@gmail.com',
     subject: 'Contacto usuario nuevo',
-    html: (
-      <div>
-        <p>{'Email: ' + email}</p>
-        <p>{'Nombre: ' + nombre}</p>
-        <p>{'Teléfono: ' + telefono}</p>
-        <p>{'Aceptó recibir Comunicaciones:' + comunicaciones}</p>
-        <p>{'Aceptó políticas, Termínos y Condiciones: true'}</p>
-        <p>{'Mensaje: ' + mensaje}</p>
-      </div>
-    )
+    html: 
+      "<div>"+
+        "<p>{'Email: ' + email}</p>"+
+        "<p>{'Nombre: ' + nombre}</p>"+
+        "<p>{'Teléfono: ' + telefono}</p>"+
+        "<p>{'Aceptó recibir Comunicaciones:' + comunicaciones}</p>"+
+        "<p>{'Aceptó políticas, Termínos y Condiciones: true'}</p>"+
+        "<p>{'Mensaje: ' + mensaje}</p>"+
+      "</div>"
   }
 
   let createTransport = nodemailer.createTransport(jConfig);
