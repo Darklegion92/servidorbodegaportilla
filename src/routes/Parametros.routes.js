@@ -13,6 +13,7 @@ router
   .get("/marcas", ParametrosCtrl.consultarmarcas)
   .get("/estados", ParametrosCtrl.consultarEstados)
   .get("/subgrupos/:idgrupo", ParametrosCtrl.consultarsubgrupos)
+  .get("/contador", ParametrosCtrl.consultarcontador)
   .delete("/carusel/:id", Auth.isAuth, ParametrosCtrl.eliminarcarusel)
   .post("/subirimg", Auth.isAuth, ParametrosCtrl.subirimg)
   .post("/carusel", Auth.isAuth, ParametrosCtrl.agregarcarusel)

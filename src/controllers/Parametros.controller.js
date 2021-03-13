@@ -64,6 +64,20 @@ async function consultarcarusel(req, res) {
   }
 }
 
+async function consultarcontador(req, res) {
+  res.setHeader("Content-Type", "application/json");
+
+  try {
+    const datos = await pool.query("SELECT * FROM parametros where id = 1");
+
+    if (datos.length > 0) {
+      res.status(200).send(datos);
+    } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
+  } catch (e) {
+    res.status(501).send({ mensaje: "Error " + e });
+    console.log(e);
+  }
+}
 async function consultarrecomendaciones(req, res) {
   res.setHeader("Content-Type", "application/json");
 
@@ -366,5 +380,6 @@ module.exports = {
   subirimg,
   consultarBancosPSE,
   consultarEstados,
+  consultarcontador,
   error,
 };
