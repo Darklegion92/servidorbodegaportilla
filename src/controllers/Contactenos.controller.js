@@ -6,14 +6,11 @@ function enviarContacto (req, res) {
   console.log('Creating transport...')
 
   let jConfig = {
-    host: 'smtp.gmail.com',
-    port: '587',
-    secure: false,
+    service: "gmail", //al usar un servicio bien conocido, no es necesario proveer un nombre de servidor.
     auth: {
-      type: 'login',
-      user: 'contactos.portilla@gmail.com',
-      pass: 'B123456789p.'
-    }
+      user: "contactos.portilla@gmail.com",
+      pass: "B123456789p.",
+    },
   }
 
   var email2 = {
