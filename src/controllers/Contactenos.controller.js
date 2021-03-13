@@ -35,7 +35,7 @@ function enviarContacto (req, res) {
 
   createTransport.sendMail(email2, function (error, info) { 
     if(error){ 
-         console.log("Error al enviar email"); 
+         console.log("Error al enviar email >>",error); 
       res.status(501).send({ mensaje: error });
 
     } else{ 
