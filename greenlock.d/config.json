@@ -16,9 +16,9 @@
   },
   "sites": [
     {
-      "subject": "api.bodegaportilla.com",
+      "subject": "apirest.bodegaportilla.com",
       "altnames": [
-        "api.bodegaportilla.com"
+        "apirest.bodegaportilla.com"
       ],
       "renewAt": 1615674818875
     }
