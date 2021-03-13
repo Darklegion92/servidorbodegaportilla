@@ -55,6 +55,7 @@ async function consultarcarusel(req, res) {
     const datos = await pool.query("SELECT * FROM carusel");
 
     if (datos.length > 0) {
+      await pool.query("UPDATE parametros set valor = valor+1 where id = 1");
       res.status(200).send(datos);
     } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
   } catch (e) {
