@@ -38,3 +38,28 @@ ADD COLUMN `fecha` DATE NOT NULL AFTER `idestado`;
 ALTER TABLE `apirest`.`articulos` 
 ADD COLUMN `estado` TINYINT(1) NOT NULL DEFAULT 1 AFTER `incremento`,
 CHANGE COLUMN `img` `img` VARCHAR(150) NULL DEFAULT 'img/ninguna.png' ;
+
+/*CAMBIOS 13/03/2021*/
+
+/*se agrega columna a tabla parametros*/
+
+ALTER TABLE `apirest`.`parametros` 
+ADD COLUMN `fecha` DATE NOT NULL AFTER `valor`;
+
+CREATE TABLE `contador_historial` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fecha` date NOT NULL,
+  `cantidad` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) 
+
+DELIMITTER && 
+CREATE DEFINER = CURRENT_USER TRIGGER `apirest`.`parametros_BEFORE_UPDATE` BEFORE UPDATE ON `parametros` FOR EACH ROW
+BEGIN
+	IF NEW.fecha>OLD.fecha THEN
+		INSERT INTO contador_historial(fecha,cantidad)value(OLD.fecha,OLD.valor);
+    END IF;
+END&&
+
+DELIMITTER ;
