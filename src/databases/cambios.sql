@@ -54,7 +54,7 @@ CREATE TABLE `contador_historial` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) 
 
-DELIMITTER && 
+DELIMITER &&
 CREATE DEFINER = CURRENT_USER TRIGGER `apirest`.`parametros_BEFORE_UPDATE` BEFORE UPDATE ON `parametros` FOR EACH ROW
 BEGIN
 	IF NEW.fecha>OLD.fecha THEN
@@ -62,4 +62,4 @@ BEGIN
     END IF;
 END&&
 
-DELIMITTER ;
+DELIMITER ;

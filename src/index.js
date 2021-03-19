@@ -13,6 +13,7 @@ const contactenosRouter = require('./routes/Contactenos.routes')
 const clientesRouter = require('./routes/Clientes.routes')
 const cuponRouter = require('./routes/Cupon.routes')
 const pasarelaRouter = require('./routes/GlobalPay.routes')
+const informesRouter =require("./routes/Informes.routes")
 const { bancospse } = require('./services/bancospse')
 
 //initializations
@@ -54,6 +55,7 @@ app.use('/admin', authRouter)
 app.use('/clientes', clientesRouter)
 app.use('/cupon', cuponRouter)
 app.use('/pasarela', pasarelaRouter)
+app.use("/informes", informesRouter)
 
 //Public
 app.use(express.static(path.join(__dirname, 'public')))
