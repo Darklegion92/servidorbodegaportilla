@@ -227,8 +227,7 @@ async function agregarcarusel(req, res) {
             "src/public/temp/" + imgmovil,
             "src/public/img/carusel/movil/" + imgmovil,
             (err) => {
-              if (err) res.status(502).send({ error: err });
-              else res.status(200).send({ mensaje: "ok" });
+              res.status(200).send({ mensaje: "ok" });
               return;
             }
           );
