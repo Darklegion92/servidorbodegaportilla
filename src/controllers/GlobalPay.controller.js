@@ -1,6 +1,32 @@
 const axios = require('axios')
+const { pasarela } = require("../config/keys")
+const { crearToken } = require("../middlewares/globalPlay");
 
-async function pagoPSE (req, res) {
+
+
+async function statusPSE(idTransaction) {
+  const AuthToken = await crearToken();
+
+  const json = await axios.get(
+    pasarela.URL + `pse/order/${idTransaction}`,
+    { headers: { "auth-token": AuthToken } }
+  );
+
+  return json;
+}
+
+async function statusCreditCard(idTransaction) {
+  const AuthToken = await crearToken();
+
+  const json = await axios.get(
+    pasarela.URL + `v2/transaction/${idTransaction}`,
+    { headers: { "auth-token": AuthToken } }
+  );
+
+  return json;
+}
+
+async function pagoPSE(req, res) {
   const { AuthToken } = req
   try {
     const resp = await axios.post(
@@ -42,7 +68,7 @@ async function pagoPSE (req, res) {
   }
 }
 
-async function pagoCredito (req, res) {
+async function pagoCredito(req, res) {
   const { AuthToken } = req
   try {
     const resp = await axios.post(
@@ -85,7 +111,7 @@ async function pagoCredito (req, res) {
   }
 }
 
-async function eliminarTarjeta (req, res) {
+async function eliminarTarjeta(req, res) {
   const { AuthToken } = req
   try {
     const resp = await axios.post(
@@ -109,7 +135,7 @@ async function eliminarTarjeta (req, res) {
   }
 }
 
-async function obtenerTarjetas (req, res) {
+async function obtenerTarjetas(req, res) {
   const { AuthToken } = req
   try {
     const resp = await axios.get(
@@ -124,7 +150,7 @@ async function obtenerTarjetas (req, res) {
   }
 }
 
-async function pagoEfectivo (req, res) {
+async function pagoEfectivo(req, res) {
   const { AuthToken } = req
   try {
     const resp = await axios.post(
@@ -156,7 +182,7 @@ async function pagoEfectivo (req, res) {
     res.status(500).send(e)
   }
 }
-function error (req, res) {
+function error(req, res) {
   res.setHeader('Content-Type', 'application/json')
   res.status(404).send({ mensaje: 'Página no encontrada' })
 }
@@ -165,5 +191,7 @@ module.exports = {
   pagoPSE,
   pagoEfectivo,
   pagoCredito,
+  statusCreditCard,
+  statusPSE,
   error
 }
