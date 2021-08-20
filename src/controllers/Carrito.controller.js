@@ -1,8 +1,9 @@
 const pool = require('../config/database')
 const { pasarela } = require('../config/keys')
 const axios = require('axios')
+const { sentMail } = require('../services/sentMail')
 
-async function guardarCarrito (req, res) {
+async function guardarCarrito(req, res) {
   res.setHeader('Content-Type', 'application/json')
 
   const { user, carrito, datosOrden, datosPago, tipoPago } = req.body
@@ -54,7 +55,7 @@ async function guardarCarrito (req, res) {
     props1 = props1 + ';'
     await pool.query(
       'INSERT INTO orden_detalles(codigoarticulo,preciound,cantidad,nombrearticulo,embalajearticulo,idorden,img)values' +
-        props1
+      props1
     )
 
     ///aca va funcion para crear en GLOBALPAY
@@ -83,16 +84,15 @@ async function guardarCarrito (req, res) {
       }
     } else if (tipoPago === 'efecty') {
       resp = await pagoEfectivo(AuthToken, total)
-      //console.log(resp);
       if (resp.status === 200)
         await pool.query(
           'UPDATE ordenes set finalizada=1, idtipo_pago=2,numeropago=?,fecha=CURDATE() where id=?',
           [resp.data.transaction.id, idorden]
         )
-        await pool.query(
-          'UPDATE clientes set idorden=null where id=?',
-          [user.id]
-        )
+      await pool.query(
+        'UPDATE clientes set idorden=null where id=?',
+        [user.id]
+      )
       res.status(200).send({
         url: '/pagoefectivo',
         datos: resp.data,
@@ -126,36 +126,35 @@ async function guardarCarrito (req, res) {
   }
 }
 
-async function consultarTodas (req, res) {
+async function consultarTodas(req, res) {
   res.setHeader('Content-Type', 'application/json')
 
   const { estado, fechas } = req.query
   const date = fechas && JSON.parse(fechas)
- 
+
   let sql =
     'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
     'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 order by id desc'
   let params = []
   try {
-    if (estado && date && date.date!=null) {
+    if (estado && date && date.date != null) {
       sql =
         'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
-        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and o.idestado = ? and fecha>=? and fecha<=?'+
+        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and o.idestado = ? and fecha>=? and fecha<=?' +
         ' order by id desc'
-      params = [estado,date.dateString[0],date.dateString[1]]
-    }else if (estado) {
+      params = [estado, date.dateString[0], date.dateString[1]]
+    } else if (estado) {
       sql =
         'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
-        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and o.idestado = ?'+
+        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and o.idestado = ?' +
         ' order by id desc'
       params = [estado]
-    }else if (date && date.date!=null) {
+    } else if (date && date.date != null) {
       sql =
         'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
-        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and fecha>=? and fecha<=?'+
+        'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and fecha>=? and fecha<=?' +
         ' order by id desc'
-console.log(date)
-      params = [date.dateString[0],date.dateString[1]]
+      params = [date.dateString[0], date.dateString[1]]
     }
 
     const resp = await pool.query(sql, params)
@@ -174,8 +173,8 @@ console.log(date)
           res.status(200).send(ordenes)
         }
       })
-    }else{
-      res.status(201).send({message:"sin datos"})
+    } else {
+      res.status(201).send({ message: "sin datos" })
     }
   } catch (e) {
     res.status(501).send({ mensaje: 'Error ' + e })
@@ -183,7 +182,7 @@ console.log(date)
   }
 }
 
-async function pagoEfectivo (AuthToken, total) {
+async function pagoEfectivo(AuthToken, total) {
   try {
     const resp = await axios.post(
       pasarela.URL + 'order/',
@@ -213,7 +212,7 @@ async function pagoEfectivo (AuthToken, total) {
   }
 }
 
-async function pagoPSE (
+async function pagoPSE(
   datosPago,
   AuthToken,
   { nombres, apellidos, documento },
@@ -229,8 +228,8 @@ async function pagoPSE (
           id: 'PSE',
           extra_params: {
             bank_code: datosPago.banco,
-            response_url: 'https://bodegaportilla.vercel.app/orden/' + idorden,
-            //response_url: 'https://bodegaportilla.com/orden/' + idorden,
+            //response_url: 'https://bodegaportilla.vercel.app/orden/' + idorden,
+            response_url: 'https://bodegaportilla.com/orden/' + idorden,
             user: {
               name: nombres + ' ' + apellidos,
               fiscal_number: documento,
@@ -261,7 +260,7 @@ async function pagoPSE (
   }
 }
 
-async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
+async function pagoCredito(AuthToken, AuthTokenClient, datos, total) {
   //let jsonInscribir
   try {
     //inscribir tarjeta
@@ -383,7 +382,7 @@ async function pagoCredito (AuthToken, AuthTokenClient, datos, total) {
   }
 }
 
-async function agregarItem (req, res) {
+async function agregarItem(req, res) {
   res.setHeader('Content-Type', 'application/json')
   const { item } = req.body
   const { idusuario } = req
@@ -396,7 +395,7 @@ async function agregarItem (req, res) {
     if (cliente[0].idorden) {
       const resp = await pool.query(
         'INSERT INTO orden_detalles (codigoarticulo, preciound, cantidad, nombrearticulo, embalajearticulo, idorden, img) ' +
-          'VALUES (?, ?, ?, ?, ?, ?, ?);',
+        'VALUES (?, ?, ?, ?, ?, ?, ?);',
         [
           item.codigo,
           item.precio,
@@ -416,7 +415,7 @@ async function agregarItem (req, res) {
       if (orden.insertId > 0) {
         const resp = await pool.query(
           'INSERT INTO orden_detalles (codigoarticulo, preciound, cantidad, nombrearticulo, embalajearticulo, idorden, img) ' +
-            'VALUES (?, ?, ?, ?, ?, ?, ?);',
+          'VALUES (?, ?, ?, ?, ?, ?, ?);',
           [
             item.codigo,
             item.precio,
@@ -439,7 +438,7 @@ async function agregarItem (req, res) {
   //
 }
 
-async function eliminarItem (req, res) {
+async function eliminarItem(req, res) {
   res.setHeader('Content-Type', 'application/json')
   const { item } = req.body
   const { idusuario } = req
@@ -463,7 +462,7 @@ async function eliminarItem (req, res) {
   }
 }
 
-async function editarItem (req, res) {
+async function editarItem(req, res) {
   res.setHeader('Content-Type', 'application/json')
   const { item } = req.body
   const { idusuario } = req
@@ -486,7 +485,7 @@ async function editarItem (req, res) {
   }
 }
 
-async function consultar (req, res) {
+async function consultar(req, res) {
   res.setHeader('Content-Type', 'application/json')
   const { idorden } = req.params
   const { AuthToken } = req
@@ -538,18 +537,18 @@ async function consultar (req, res) {
   }
 }
 
-async function actualizarEstado (req, res) {
+async function actualizarEstado(req, res) {
   res.setHeader('Content-Type', 'application/json')
-  const { idorden,state } = req.body
+  const { idorden, state } = req.body
   try {
     const orden = await pool.query('UPDATE ordenes set idestado=? where id=?', [
-      state,idorden
+      state, idorden
     ])
-   
+
     if (orden.affectedRows > 0) {
-      res.status(200).send({messaje:"actualizado correcto"})
-    }else{
-      res.status(201).send({messaje:"orden no encontrada"})
+      res.status(200).send({ messaje: "actualizado correcto" })
+    } else {
+      res.status(201).send({ messaje: "orden no encontrada" })
     }
   } catch (e) {
     console.log(e)
@@ -557,7 +556,7 @@ async function actualizarEstado (req, res) {
   }
 }
 
-function error (req, res) {
+function error(req, res) {
   res.setHeader('Content-Type', 'application/json')
   res.status(404).send({ mensaje: 'Página no encontrada' })
 }

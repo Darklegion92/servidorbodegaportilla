@@ -13,8 +13,9 @@ const contactenosRouter = require('./routes/Contactenos.routes')
 const clientesRouter = require('./routes/Clientes.routes')
 const cuponRouter = require('./routes/Cupon.routes')
 const pasarelaRouter = require('./routes/GlobalPay.routes')
-const informesRouter =require("./routes/Informes.routes")
+const informesRouter = require("./routes/Informes.routes")
 const { bancospse } = require('./services/bancospse')
+const { validateCart } = require('./services/validateCart')
 
 //initializations
 var app = express()
@@ -25,6 +26,8 @@ const options = {
 }
 
 bancospse()
+validateCart.start()
+
 //settings
 app.set('port', process.env.PORT || 80)
 

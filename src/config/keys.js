@@ -21,5 +21,6 @@ module.exports ={
         APPLICATIONCODECLIENT : "BODPORTILLA-GLP-CLIENT",
         serverappkeyclient: "ISDsU7y78PbMCohFXdfB8rci4EgLcl",
     },
-    SECRET_TOKEN:"SOLTEC-BODEGA25684@*.1S221%-"
+    SECRET_TOKEN:"SOLTEC-BODEGA25684@*.1S221%-",
+    EMAIL_RESPONSE: "onlin1992@gmail.com"
 }
