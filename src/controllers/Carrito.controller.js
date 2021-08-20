@@ -154,6 +154,7 @@ async function consultarTodas (req, res) {
         'select o.*,ep.nombre as estadopago,concat(nombrecliente,apellidoscliente) as cliente, e.nombre as estado ' +
         'from ordenes o,estados_pago ep,estados e where o.idestado_pago = ep.id and e.id=o.idestado and finalizada=1 and fecha>=? and fecha<=?'+
         ' order by id desc'
+console.log(date)
       params = [date.dateString[0],date.dateString[1]]
     }
 
