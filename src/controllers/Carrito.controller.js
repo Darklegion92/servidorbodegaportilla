@@ -506,11 +506,17 @@ async function consultar(req, res) {
           //se actualiza el estado del tipo de pago de la orden
 
           if (json.data.transaction.status === 'failure') {
+            const message = `El pago para del pedido ${idorden} por valor de ${orden[0].total} fue RECHAZADO y su pedido CANCELADO No. Transacción ${item.numeropago}`
+            const subject = `Transacción No. ${orden[0].numeropago} ha sido RECHAZADA`
+            sentMail({ message, subject })
             estado = 'RECHAZADO'
             await pool.query('UPDATE ordenes set idestado_pago=3 where id=?', [
               idorden
             ])
           } else if (json.data.transaction.status === 'approved') {
+            const message = `El pago para del pedido ${idorden} por valor de ${orden[0].total} fue APROBADO y su pedido pedido esta siendo preparado No. Transacción ${item.numeropago}`
+            const subject = `Transacción No. ${orden[0].numeropago} ha sido APROBADA`
+            sentMail({ message, subject })
             estado = 'APROBADO'
             await pool.query('UPDATE ordenes set idestado_pago=2 where id=?', [
               idorden
