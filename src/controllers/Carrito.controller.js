@@ -506,7 +506,7 @@ async function consultar(req, res) {
           //se actualiza el estado del tipo de pago de la orden
 
           if (json.data.transaction.status === 'failure') {
-            const message = `El pago para del pedido ${idorden} por valor de ${orden[0].total} fue RECHAZADO y su pedido CANCELADO No. Transacción ${item.numeropago}`
+            const message = `El pago para del pedido ${idorden} por valor de ${orden[0].total} fue RECHAZADO y su pedido CANCELADO No. Transacción ${orden[0].numeropago}`
             const subject = `Transacción No. ${orden[0].numeropago} ha sido RECHAZADA`
             sentMail({ message, subject })
             estado = 'RECHAZADO'
@@ -514,7 +514,7 @@ async function consultar(req, res) {
               idorden
             ])
           } else if (json.data.transaction.status === 'approved') {
-            const message = `El pago para del pedido ${idorden} por valor de ${orden[0].total} fue APROBADO y su pedido pedido esta siendo preparado No. Transacción ${item.numeropago}`
+            const message = `El pago para del pedido ${idorden} por valor de ${orden[0].total} fue APROBADO y su pedido pedido esta siendo preparado No. Transacción ${orden[0].numeropago}`
             const subject = `Transacción No. ${orden[0].numeropago} ha sido APROBADA`
             sentMail({ message, subject })
             estado = 'APROBADO'
@@ -528,6 +528,8 @@ async function consultar(req, res) {
           res.status(501).send({ error: 'error en servidor GlobalPay' })
         }
       }
+
+      console.log(orden)
       res.status(200).send({
         nombre: orden[0].nombrecliente + ' ' + orden[0].apellidoscliente,
         valor: orden[0].total,
