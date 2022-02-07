@@ -90,12 +90,9 @@ async function editar(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { articulo, img } = req.body;
   if (img) {
-    if(img.length>0){
-    const data = img.reduce((a,dato)=>a+"img/articulos/" + dato.url+'|','')
-    articulo.img = data.substring(0, data.length - 1)
-    }else{
+    articulo.img = img.slice(1)
+  }else{
       articulo.img = null
-    }
   }
 
   if (articulo.embalaje === "Gr") {
@@ -105,26 +102,32 @@ async function editar(req, res) {
     articulo.dcto3 = articulo.dcto3 / 1000;
   }
   try {
-    const datos = await pool.query("UPDATE articulos SET ? WHERE codigo=?", [
+    const datos = await pool.query("UPDATE articulos SET ? WHERE id=?", [
       articulo,
-      articulo.codigo,
+      articulo.id,
     ]);
     if (datos.affectedRows > 0) {
-      if (img?.length > 0 && img !== null) {
-        img.forEach((dato,key)=>{
-          fsE.move(
-            "src/public/temp/" + dato.url,
-            "src/public/img/articulos/" + dato.url,
-            (err) => {
-              if (err) res.status(502).send({ error: err });
-              else if(key===img.length){
-                res.status(200).send({ msg: "articulo correcto" });
-                //fs.unlink("src/public/" + imgOld[0]);
-              }
-              //return;
-            }
-          );
-      })
+      const dataImage = img.slice(1).split("|")
+      if (dataImage?.length > 0 && dataImage !== null) {
+        for(let i=0;i<dataImage.length;i++){
+          const dato = dataImage[i]
+          const exist = fsE.existsSync("src/public/temp/" + dato)
+          console.log(exist);
+          if(exist){
+            fsE.move(
+              "src/public/temp/" + dato,
+              "src/public/img/articulos/" + dato,
+              (err) => {
+                if (err){ 
+                  res.status(502).send({ error: err });
+                  return;
+                } else if(i===dataImage.length){
+                  res.status(200).send({ msg: "articulo correcto" });
+                }
+            })
+          }
+        }
+        res.status(200).send({ msg: "articulo correcto" });
       } else res.status(200).send({ msg: "articulo correcto" });
     } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
   } catch (e) {

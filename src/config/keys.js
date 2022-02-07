@@ -1,6 +1,6 @@
 module.exports ={
     database:{
-        host:'localhost',
+        host:process.env.URL || 'localhost',
         user:'root',
         password:'1234',
         database:'apirest',

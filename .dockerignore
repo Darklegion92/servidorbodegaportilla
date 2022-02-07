@@ -1,0 +1,9 @@
+*.log
+.dockerignore
+.git
+.gitignore
+src/databases/*
+DockerFile
+node_modules
+mysql_data
+docker-compose.yml

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      URL: "db"
+    ports:
+      - "80:80"
+    working_dir: /app
+    volumes:
+      - .:/app
+      #- /usr/src/node_modules
+    command: npx nodemon src/pruebas.js
+
+  db: 
+    image: mysql:5
+    environment:
+      - MYSQL_DATABASE=apirest
+      - MYSQL_ROOT_PASSWORD=1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql

@@ -7,12 +7,14 @@ async function articulos(req, res) {
   const fechaI = new Date(fechainicial);
   const fechaF = new Date(fechafinal);
 
+// se debe cambiar la consultadsd
   try {
     let sql = "";
     let parametros = {};
     if (tipo === "1") {
       if (idgrupo === "0") {
         if (fechainicial && fechafinal) {
+          console.log("en fechas");
           sql =
             "SELECT d.codigoarticulo AS codigo, d.descripcionarticulo AS descripcion, SUM(d.cantidadarticulo) AS cantidad, " +
             "SUM(d.cantidadarticulo*d.valorarticulo) AS valor, g.nombre AS grupo, s.nombre AS subgrupo, m.nombre AS marca, " +
