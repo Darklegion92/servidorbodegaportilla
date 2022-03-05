@@ -9,10 +9,9 @@ services:
       URL: "db"
     ports:
       - "80:80"
-    working_dir: /app
     volumes:
       - .:/app
-      #- /usr/src/node_modules
+      - /app/node_modules
     command: npx nodemon src/pruebas.js
 
   db: 

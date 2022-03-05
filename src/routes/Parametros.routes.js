@@ -14,7 +14,7 @@ router
   .get("/estados", ParametrosCtrl.consultarEstados)
   .get("/subgrupos/:idgrupo", ParametrosCtrl.consultarsubgrupos)
   .get("/contador", ParametrosCtrl.consultarcontador)
-  .delete("/carusel/:id", Auth.isAuth, ParametrosCtrl.eliminarcarusel)
+  .delete("/carusel/:id/:type", Auth.isAuth, ParametrosCtrl.eliminarcarusel)
   .post("/subirimg", Auth.isAuth, ParametrosCtrl.subirimg)
   .post("/carusel", Auth.isAuth, ParametrosCtrl.agregarcarusel)
   .put("/carusel", Auth.isAuth, ParametrosCtrl.editarcarusel)

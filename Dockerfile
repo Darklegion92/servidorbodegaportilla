@@ -2,11 +2,11 @@ FROM node:16
 
 COPY ["package.json","package-lock.json","/app/"]
 
-WORKDIR /usr/src
+WORKDIR /app
 
 RUN npm install
 
-COPY [".","/app/"]
+COPY [".","."]
 
 EXPOSE 80
 

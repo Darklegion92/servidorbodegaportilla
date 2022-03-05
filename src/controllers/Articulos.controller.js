@@ -89,6 +89,8 @@ async function consultarCodigo(req, res) {
 async function editar(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { articulo, img } = req.body;
+  console.log("Articulos",img);
+
   if (img) {
     articulo.img = img.slice(1)
   }else{
@@ -101,6 +103,7 @@ async function editar(req, res) {
     articulo.dcto2 = articulo.dcto2 / 1000;
     articulo.dcto3 = articulo.dcto3 / 1000;
   }
+
   try {
     const datos = await pool.query("UPDATE articulos SET ? WHERE id=?", [
       articulo,
