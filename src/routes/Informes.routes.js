@@ -4,7 +4,8 @@ const InformesCtrl = require("../controllers/Informes.controller");
 
 router = Router();
 router
-  .get("/:tipo", Auth.isAuth, InformesCtrl.articulos)
+  .get("/salesCustomer", Auth.isAuth, InformesCtrl.salesCustomer)
+  .get("/salesProduct", Auth.isAuth, InformesCtrl.salesProduct)
   .get("/*", InformesCtrl.error);
 
 module.exports = router;
