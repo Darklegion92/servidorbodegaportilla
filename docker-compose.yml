@@ -1,21 +1,21 @@
 version: '3.8'
 
 services:
-  app:
-    build: .
-    depends_on:
-      - db
-    environment:
-      URL: "db"
-    ports:
-      - "80:80"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: npx nodemon src/pruebas.js
+ # app:
+  #  build: .
+   # depends_on:
+    #  - db
+    #environment:
+    #  URL: "db"
+ #   ports:
+  #    - "80:80"
+   # volumes:
+    #  - .:/app
+     # - /app/node_modules
+    #command: npx nodemon src/pruebas.js
 
   db: 
-    image: mysql:5
+    image: mariadb:5
     environment:
       - MYSQL_DATABASE=apirest
       - MYSQL_ROOT_PASSWORD=1234
