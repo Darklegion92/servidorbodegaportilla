@@ -178,21 +178,9 @@ async function eliminarcarusel(req, res) {
     const { id, type } = req.params;
 
     if (type === "movil") {
-      const eliminado = await pool.query(
-        "update carusel set imgmovil = null where id =?",
-        [id]
-      );
-      if (eliminado.affectedRows > 0) {
-        await fs.unlink("src/public/" + slider[0].imgmovil);
-      }
+      await pool.query("update carusel set imgmovil = null where id =?", [id]);
     } else {
-      const eliminado = await pool.query(
-        "update carusel set img = null where id =?",
-        [id]
-      );
-      if (eliminado.affectedRows > 0) {
-        await fs.unlink("src/public/" + slider[0].img);
-      }
+      await pool.query("update carusel set img = null where id =?", [id]);
     }
   } catch (e) {
     console.log(e);
