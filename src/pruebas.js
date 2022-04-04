@@ -29,7 +29,7 @@ bancospse()
 validateCart.start()
 
 //settings
-app.set('port', process.env.PORT || 80)
+app.set('port', process.env.PORT || 8080)
 
 //middlewares
 app.use(cors())

@@ -53,10 +53,17 @@ async function guardarCarrito(req, res) {
     })
     let props1 = props.substr(0, props.length - 1)
     props1 = props1 + ';'
-    await pool.query(
+ await pool.query(
       'INSERT INTO orden_detalles(codigoarticulo,preciound,cantidad,nombrearticulo,embalajearticulo,idorden,img)values' +
       props1
     )
+
+    //Enviar correo por transaccion realizada
+
+    sendtMail({
+      message:`Se ha registrado un pedido a nombre de ${datosOrden.nombres} ${datosOrden.apellidos} por valor $ ${total}`,
+      subject: 'Nuevo pedido registrdo'
+    })
 
     ///aca va funcion para crear en GLOBALPAY
     let resp
