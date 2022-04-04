@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const {isAuth} = require("../middlewares/acceso");
+const { isAuth } = require("../middlewares/acceso");
 const { connectGlobalPlay } = require("../middlewares/globalPlay");
 const CarritoCtrl = require("../controllers/Carrito.controller");
 
@@ -12,6 +12,7 @@ router
   .post("/item/delete", isAuth, CarritoCtrl.eliminarItem)
   .post("/item/update", isAuth, CarritoCtrl.editarItem)
   .put("/guardar", connectGlobalPlay, CarritoCtrl.guardarCarrito)
+  .delete("/:id", isAuth, CarritoCtrl.eliminar)
   .get("/*", CarritoCtrl.error);
 
 module.exports = router;

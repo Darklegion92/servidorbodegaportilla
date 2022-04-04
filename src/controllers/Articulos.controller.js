@@ -105,6 +105,7 @@ async function editar(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { articulo, img } = req.body;
   let imgMysql = "";
+
   if (img.length > 0) {
     imgMysql = img.reduce(
       (name, image) => name + "|img/articulos/" + image.url,
@@ -138,15 +139,17 @@ async function editar(req, res) {
               "src/public/temp/" + dato,
               "src/public/img/articulos/" + dato,
               (err) => {
-                if (i === img.length) {
+                if (i === img.length-1) {
                   res.status(200).send({ msg: "articulo correcto" });
                   return;
                 }
               }
             );
-            res.status(200).send({ msg: "articulo correcto" });
           } else {
-            res.status(200).send({ msg: "articulo correcto" });
+            if (i === img.length-1) {
+              res.status(200).send({ msg: "articulo correcto" });
+              return;
+            }
           }
         }
       } else res.status(201).send({ mensaje: "No Se Encontraron Resultados" });
@@ -214,15 +217,17 @@ async function crear(req, res) {
               "src/public/temp/" + dato,
               "src/public/img/articulos/" + dato,
               (err) => {
-                if (i === img.length) {
+                if (i === img.length-1) {
                   res.status(200).send({ msg: "articulo correcto" });
                   return;
                 }
               }
             );
-            res.status(200).send({ msg: "articulo correcto" });
           } else {
-            res.status(200).send({ msg: "articulo correcto" });
+            if (i === img.length-1) {
+              res.status(200).send({ msg: "articulo correcto" });
+              return;
+            }
           }
         }
       } else res.status(200).send({ msg: "articulo correcto" });
