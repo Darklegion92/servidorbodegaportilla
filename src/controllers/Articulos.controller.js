@@ -163,7 +163,7 @@ async function crear(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { articulo, img } = req.body;
   if (img && img.length>0) {
-    const imgMysql = img.reduce(
+    let imgMysql = img.reduce(
       (name, image) => name + "|img/articulos/" + image.url,
       ""
     );
