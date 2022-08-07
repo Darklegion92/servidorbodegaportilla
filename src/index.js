@@ -14,6 +14,8 @@ const clientesRouter = require('./routes/Clientes.routes')
 const cuponRouter = require('./routes/Cupon.routes')
 const pasarelaRouter = require('./routes/GlobalPay.routes')
 const informesRouter = require("./routes/Informes.routes")
+const subgruposRouter = require("./routes/Subgrupos.routes")
+const gruposRouter = require("./routes/Grupos.routes")
 const { bancospse } = require('./services/bancospse')
 const { validateCart } = require('./services/validateCart')
 
@@ -59,6 +61,8 @@ app.use('/clientes', clientesRouter)
 app.use('/cupon', cuponRouter)
 app.use('/pasarela', pasarelaRouter)
 app.use("/informes", informesRouter)
+app.use("/subgrupos", subgruposRouter)
+app.use("/grupos", gruposRouter)
 
 //Public
 app.use(express.static(path.join(__dirname, 'public')))

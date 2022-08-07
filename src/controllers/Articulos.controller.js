@@ -6,7 +6,7 @@ async function consultarCategoria(req, res) {
   res.setHeader("Content-Type", "application/json");
   try {
     let sql =
-      "select * from articulos where categoria !='NORMAL' and estado=1 ORDER BY articulos.rank desc,articulos.nombre asc";
+      "select a.*, s.descuento as descuento from articulos a, subgrupos s where a.idsubgrupo = s.id and categoria !='NORMAL' and estado=1 ORDER BY a.rank desc,a.nombre asc";
 
     const datos = await pool.query(sql);
 
@@ -23,7 +23,7 @@ async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { idgrupo, idsubgrupo, idmarca, orden, nombre, iscar } = req.query;
 
-  let order = "articulos.rank desc,articulos.nombre asc";
+  let order = "a.rank desc,a.nombre asc";
   let name = "";
   if (orden) {
     order = "articulos." + orden + ",articulos.rank desc,articulos.nombre asc";
@@ -33,42 +33,42 @@ async function consultar(req, res) {
   }
   try {
     let sql =
-      "select * from articulos where nombre LIKE ? " +
+      "select a.*, s.descuento as descuento from articulos a, subgrupos s where s.id = a.idsubgrupo and a.nombre LIKE ? " +
       (iscar ? "and estado=1" : "") +
       " ORDER BY " +
       order;
     let params = ["%" + name + "%", order];
     if (idgrupo && idsubgrupo && idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? and idmarca=? " +
+        "select a.*, s.descuento as descuento from articulos a, subgrupos s where s.id = a.idsubgrupo and a.nombre LIKE ? AND a.idgrupo=? and idsubgrupo=? and idmarca=? " +
         (iscar ? "and estado=1" : "") +
         " ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idsubgrupo, idmarca];
     } else if (idgrupo && idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=?and idmarca=? " +
+        "select a.*, s.descuento as descuento from articulos a, subgrupos s where s.id = a.idsubgrupo and a.nombre LIKE ? AND a.idgrupo=?and idmarca=? " +
         (iscar ? "and estado=1" : "") +
         " ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idmarca];
     } else if (idgrupo && idsubgrupo) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? and idsubgrupo=? " +
+        "select a.*, s.descuento as descuento from articulos a, subgrupos s where s.id = a.idsubgrupo and a.nombre LIKE ? AND a.idgrupo=? and idsubgrupo=? " +
         (iscar ? "and estado=1" : "") +
         " ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo, idsubgrupo];
     } else if (idgrupo) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idgrupo=? " +
+        "select a.*, s.descuento as descuento from articulos a, subgrupos s where s.id = a.idsubgrupo and a.nombre LIKE ? AND a.idgrupo=? " +
         (iscar ? "and estado=1" : "") +
         " ORDER BY " +
         order;
       params = ["%" + name + "%", idgrupo];
     } else if (idmarca) {
       sql =
-        "select * from articulos where nombre LIKE ? AND idmarca=? " +
+        "select a.*, s.descuento as descuento from articulos a, subgrupos s where s.id = a.idsubgrupo and a.nombre LIKE ? AND idmarca=? " +
         (iscar ? "and estado=1" : "") +
         " ORDER BY " +
         order;
@@ -89,7 +89,7 @@ async function consultarCodigo(req, res) {
   const { codigo } = req.query;
   try {
     const datos = await pool.query(
-      "select * from articulos where codigo = ? order by articulos.rank desc ,articulos.nombre asc",
+      "select a.*, s.descuento as descuento from articulos a, subgrupos s where s.id = a.idsubgrupo and codigo = ? order by a.rank desc ,a.nombre asc",
       [codigo]
     );
     if (datos.length > 0) {
