@@ -71,12 +71,12 @@ async function editarlistasprecios(req, res) {
 
 async function editarsubgrupos(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { idsubgrupo, nombre } = req.body;
+  const { idsubgrupo, nombre, descuento } = req.body;
 
   try {
     let datos = await pool.query(
-      "UPDATE subgrupos SET nombre=?   WHERE idsubgRupo=?",
-      [nombre, idsubgrupo]
+      "UPDATE subgrupos SET nombre=?, descuento=?   WHERE id=?",
+      [nombre,descuento, idsubgrupo]
     );
 
     if (datos.affectedRows > 0) {
@@ -91,16 +91,13 @@ async function editarsubgrupos(req, res) {
 
 async function crearsubgrupos(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { nombre, idgrupo } = req.body;
-  const { idusuario } = req;
-  const fechacreacion = new Date();
+  const { nombre, idgrupo,descuento } = req.body;
 
   try {
     let datos = await pool.query("INSERT INTO subgrupos SET ?", {
       nombre,
-      idusuario,
       idgrupo,
-      fechacreacion,
+      descuento,
     });
 
     if (datos.affectedRows > 0) {
@@ -119,7 +116,7 @@ async function editarmarcas(req, res) {
 
   try {
     let datos = await pool.query(
-      "UPDATE marcas SET nombre=?   WHERE idmarca=?",
+      "UPDATE marcas SET nombre=?   WHERE id=?",
       [nombre, idmarca]
     );
 
@@ -162,7 +159,7 @@ async function editargrupos(req, res) {
 
   try {
     let datos = await pool.query(
-      "UPDATE grupos SET nombre=?   WHERE idgrupo=?",
+      "UPDATE grupos SET nombre=?   WHERE id=?",
       [nombre, idgrupo]
     );
 
@@ -179,14 +176,10 @@ async function editargrupos(req, res) {
 async function creargrupos(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { nombre } = req.body;
-  const { idusuario } = req;
-  const fechacreacion = new Date();
 
   try {
     let datos = await pool.query("INSERT INTO grupos SET ?", {
       nombre,
-      idusuario,
-      fechacreacion,
     });
 
     if (datos.affectedRows > 0) {
