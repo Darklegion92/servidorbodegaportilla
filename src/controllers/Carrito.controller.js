@@ -60,7 +60,7 @@ async function guardarCarrito(req, res) {
 
     //Enviar correo por transaccion realizada
 
-    sendtMail({
+    sentMail({
       message: `Se ha registrado un pedido a nombre de ${datosOrden.nombres} ${datosOrden.apellidos} por valor $ ${total}`,
       subject: "Nuevo pedido registrdo",
     });
@@ -76,7 +76,7 @@ async function guardarCarrito(req, res) {
         total,
         idorden
       );
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         await pool.query(
           "UPDATE ordenes set finalizada=1, idtipo_pago=4,numeropago=?,fecha=CURDATE() where id=?",
           [resp.data.transaction.id, idorden]
@@ -90,7 +90,7 @@ async function guardarCarrito(req, res) {
       }
     } else if (tipoPago === "efecty") {
       resp = await pagoEfectivo(AuthToken, total);
-      if (resp.status === 200)
+      if (resp?.status === 200)
         await pool.query(
           "UPDATE ordenes set finalizada=1, idtipo_pago=2,numeropago=?,fecha=CURDATE() where id=?",
           [resp.data.transaction.id, idorden]
@@ -105,7 +105,7 @@ async function guardarCarrito(req, res) {
       });
     } else if (tipoPago === "credito") {
       resp = await pagoCredito(AuthToken, AuthTokenClient, datosPago, total);
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         await pool.query(
           "UPDATE ordenes set finalizada=1, idtipo_pago=3,numeropago=?,fecha=CURDATE() where id=?",
           [resp.data.transaction.id, idorden]
@@ -212,7 +212,7 @@ async function pagoEfectivo(AuthToken, total) {
     );
     return resp;
   } catch (e) {
-    console.log(e);
+    console.log("Error", e);
   }
 }
 
